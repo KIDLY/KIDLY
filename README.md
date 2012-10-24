@@ -10,7 +10,7 @@ KIDLY
   You can install the Egit in Eclipse.Click Help -> Install New Software,
   then click Add button and type Name:Egit & Location: http://download.eclipse.org/egit/updates  
 
-3.Import repository from github:
+3.Import repository from github
   File -> import -> Git -> Projects from Git -> URI 
   Enter the URI: https://github.com/KIDLY/KIDLY.git -> next -> finish
 
