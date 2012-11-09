@@ -5,17 +5,15 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="KIDLY">
+    <!-- 設定Ant檔中會用到的變數 -->
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="D:/大頭被分/eclipse"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <property name="lib.dir" value="lib"/>
+    <property name="junit.output" value="junit_output"/>
+    <!-- 匯入各種會用到的jar檔 -->
     <path id="JUnit 4.libraryclasspath">
-        <!-- 
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900/junit.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
-         -->
 	    <fileset dir = "${lib.dir}">
 	    	<include name = "**/*.jar" />
 	    </fileset>
@@ -32,10 +30,6 @@
             </fileset>
         </copy>
     </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
     <target depends="build-project,FirstJunit" name="build"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
@@ -47,23 +41,35 @@
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${lib.dir}" includes="org.eclipse.jdt.core_*.jar"/>
         </copy>
         <unzip dest="${ant.library.dir}">
             <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${lib.dir}" includes="org.eclipse.jdt.core_*.jar"/>
         </unzip>
     </target>
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+    <!-- 輸出結果XML -->
     <target name="FirstJunit">
-        <mkdir dir="${junit.output.dir}"/>
+        <mkdir dir="${junit.output}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
-            <test name="FirstJunit" todir="${junit.output.dir}"/>
+            <test name="FirstJunit" todir="${junit.output}"/>
             <classpath refid="KIDLY.classpath"/>
         </junit>
     </target>
+    <!-- 建立表格尚未成功
+    <target name = "JunitReport" depends="FirstJunit">
+        <mkdir dir="${junit.output}\html"/>
+        <junitreport todir = "${junit.output}">
+            <fileset dir = "${junit.output}">
+                <include name = "TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output}/html/"/>
+        </junitreport>
+    </target>
+     -->
 </project>

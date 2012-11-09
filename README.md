@@ -18,6 +18,15 @@ KIDLY
 Snapshot
 -----
 
+<HW3>
+-----
+1.Run build.xml as Ant Build
+
+2.Auto Create folder "junit_uotput" put TEST-FirstJunit in.
+
+3.Show Result in Console.
+-----
+
 *providing*
 
 Team member
