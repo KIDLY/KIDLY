@@ -1,3 +1,4 @@
+package edu.ncku.kidly;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
