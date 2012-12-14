@@ -25,9 +25,8 @@ Snapshot
 2.Auto Create folder "junit_uotput" put TEST-FirstJunit in.
 
 3.Show Result in Console.
------
 
-*providing*
+  *providing*
 
 Team member
 -----
