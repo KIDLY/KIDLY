@@ -18,7 +18,7 @@ KIDLY
 Snapshot
 -----
 
-<HW3>
+<HW3> Auto compilation and JUnit
 -----
 1.Run build.xml as Ant Build
 
