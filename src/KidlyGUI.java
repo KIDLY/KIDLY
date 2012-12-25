@@ -54,7 +54,7 @@ public class KidlyGUI extends JFrame implements Runnable {
 	/**
 	 * Create the frame.
 	 */
-	MouseGraphicsComponent _display = new MouseGraphicsComponent();
+	
 	public KidlyGUI() {
 		initGui();
 		
