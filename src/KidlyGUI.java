@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JToolBar;
 import javax.swing.JEditorPane;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -18,15 +19,22 @@ import javax.swing.JSpinner;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import java.awt.Panel;
 
-public class KidlyGUI extends JFrame implements Runnable {
+public class KidlyGUI extends JFrame {
 
 	private JPanel contentPane;
-	private Image bufferPage = null;
+	private Image buffer = null;
+	public Graphics bg;
 
 	/**
 	 * Launch the application.
@@ -54,13 +62,13 @@ public class KidlyGUI extends JFrame implements Runnable {
 	/**
 	 * Create the frame.
 	 */
-	
+
 	public KidlyGUI() {
 		initGui();
-		
+
 	}
 
-	KidlyGUI_canvas canvas;
+	private final Action action = new SwingAction();
 
 	public void initGui() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,6 +88,7 @@ public class KidlyGUI extends JFrame implements Runnable {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.setAction(action);
 		mnFile.add(mntmExit);
 
 		JMenu mnEdit = new JMenu("Edit");
@@ -93,11 +102,6 @@ public class KidlyGUI extends JFrame implements Runnable {
 
 		JMenuItem mntmAboutThis = new JMenuItem("About this");
 		mnAbout.add(mntmAboutThis);
-
-		canvas = new KidlyGUI_canvas();
-		canvas.setBackground(Color.WHITE);
-		canvas.setBounds(29, 87, 312, 439);
-		contentPane.add(canvas);
 
 		JSpinner spinner = new JSpinner();
 		spinner.setBounds(457, 87, 134, 32);
@@ -142,82 +146,92 @@ public class KidlyGUI extends JFrame implements Runnable {
 		label_1.setBounds(457, 178, 191, 15);
 		contentPane.add(label_1);
 
+		JPanel panel = new canvasPanel();
+		panel.setBounds(29, 87, 312, 439);
+		panel.setBackground(Color.WHITE);
+		contentPane.add(panel);
 	}
 
-	public class KidlyGUI_canvas extends Canvas implements MouseListener {
+	public class canvasPanel extends JPanel implements MouseListener {
 
-		public KidlyGUI_canvas() {
-			// TODO Auto-generated constructor stub
-		}
+		Timer timer;
+		public int x = 50, y = 50;
+		public int rectX = 50, rectY = 50;
+		public int mouseX = 0, mouseY = 0;
+		boolean flag=false;
+		Graphics g;
 
-		public void main(String[] args) {
-			KidlyGUI_canvas canvas = new KidlyGUI_canvas();
+		public canvasPanel() {
 
-		}
-
-		public boolean flag = true;
-		public int x = 10, y = 50;
-
-		public void toggle() {
-			flag = false;
-		}
-
-		public void paint(Graphics g) {
-
-			g.drawRect(x, x, y, y);
-
+			ActionListener animation = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent ae) {
+					repaint();
+				}
+			};
+			timer = new Timer(50, animation);
+			timer.start();
+			addMouseListener(this);
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-
-			if (e.getX() >= 10 && e.getY() >= 10 && e.getX() <= 50
-					&& e.getY() <= 50) {
-				x = 10;
-				y = 100;
-			}
-
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			System.out.println("e.getX()" + e.getX() + " e.getY()" + e.getY());
+			if (e.getX() > x && e.getX() < x + rectX && e.getY() > y
+					&& e.getY() < y + rectY) {
+				flag=true;
+			}
+			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if(flag==true){
+				x = e.getX() - rectX / 2;
+				y = e.getY() - rectY / 2;
+				flag=false;
+			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
-	}
-	public void update(Graphics g){
-		paint(g);
-	
-	}
+		@Override
+		public void paintComponent(Graphics g) {
+			buffer = createImage(330, 450);
+			bg = buffer.getGraphics();
+			// bg.setColor(Color.WHITE);
+			bg.drawString("" + x, 20, 20);
+			bg.drawString("" + y, 20, 40);
+			bg.drawRect(x, y, rectX, rectY);
 
-	@Override
-	public void run() {
-		while (true) {
-			repaint();
+			g.drawImage(buffer, 0, 0, null);
 			try {
-				Thread.sleep(40);
-			} catch (InterruptedException e) {
+				Thread.sleep(33);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "Exit");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+	}
 }
