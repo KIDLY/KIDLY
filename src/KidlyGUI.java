@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -158,7 +159,7 @@ public class KidlyGUI extends JFrame {
 		public int x = 50, y = 50;
 		public int rectX = 50, rectY = 50;
 		public int mouseX = 0, mouseY = 0;
-		boolean flag=false;
+		boolean flag = false;
 		Graphics g;
 
 		public canvasPanel() {
@@ -183,17 +184,17 @@ public class KidlyGUI extends JFrame {
 			System.out.println("e.getX()" + e.getX() + " e.getY()" + e.getY());
 			if (e.getX() > x && e.getX() < x + rectX && e.getY() > y
 					&& e.getY() < y + rectY) {
-				flag=true;
+				flag = true;
 			}
-			
-		}
 
+		}
+		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(flag==true){
+			if (flag == true) {
 				x = e.getX() - rectX / 2;
 				y = e.getY() - rectY / 2;
-				flag=false;
+				flag = false;
 			}
 		}
 
@@ -205,12 +206,11 @@ public class KidlyGUI extends JFrame {
 		public void mouseExited(MouseEvent e) {
 
 		}
-
+		
 		@Override
 		public void paintComponent(Graphics g) {
 			buffer = createImage(330, 450);
 			bg = buffer.getGraphics();
-			// bg.setColor(Color.WHITE);
 			bg.drawString("" + x, 20, 20);
 			bg.drawString("" + y, 20, 40);
 			bg.drawRect(x, y, rectX, rectY);
@@ -222,6 +222,7 @@ public class KidlyGUI extends JFrame {
 				e.printStackTrace();
 			}
 		}
+
 
 	}
 
