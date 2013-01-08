@@ -6,14 +6,15 @@ interface IVDraw {
 	public void paint();
 }
 interface IVBuilder {
-	void buildType();
+	void buildType(String a);
 	void buildBackground();
 	void buildTitle();
 	void buildXY();
-	IVDraw showImage();
 }
-public class IVDirecter {
-	IVDirecter(ArrayList<String> data,IVBuilder builder){
+
+
+public class IVDirector {
+	IVDirector(ArrayList<String> data,IVBuilder builder){
 		
 	}
 }

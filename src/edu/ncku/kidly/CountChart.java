@@ -1,7 +1,11 @@
 package edu.ncku.kidly;
+import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
+import edu.ncku.kidly.chartControl.BarChartDemo;
+import edu.ncku.kidly.chartControl.test;
 
 public class CountChart {
 
@@ -81,7 +85,14 @@ public class CountChart {
 	}
 
 	public static void main(String[] args) {
-
+		EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                BarChartDemo demo = new BarChartDemo("JFreeChartDemo");
+                demo.pack();
+                demo.setLocationRelativeTo(null);
+                demo.setVisible(true);
+            }
+         });
 		CountChart countChart = new CountChart();
 		String inputFileString = countChart.readFile("test1.txt", "Big5");
 		String[][] result = countChart.cutLine(inputFileString);
