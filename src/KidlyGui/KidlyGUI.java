@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.MouseInputListener;
 import javax.swing.JToolBar;
 import javax.swing.JEditorPane;
 import javax.swing.Timer;
@@ -22,6 +23,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -33,6 +35,9 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Action;
+
+import java.util.Collections;
+
 import java.awt.Panel;
 import java.io.File;
 import java.io.IOException;
@@ -159,7 +164,7 @@ public class KidlyGUI extends JFrame {
 		contentPane.add(panel);
 	}
 
-	public class canvasPanel extends JPanel implements MouseListener {
+	public class canvasPanel extends JPanel implements MouseListener, MouseMotionListener{
 
 		Timer timer;
 		public int x = 50, y = 50;
@@ -186,6 +191,7 @@ public class KidlyGUI extends JFrame {
             }
             ib = new ImageBlock(bi, 0, 0); 
             this.IBManager.addImageBlock(ib);
+            this.IBManager.selectLayout(0);
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -196,6 +202,7 @@ public class KidlyGUI extends JFrame {
 			timer = new Timer(50, animation);
 			timer.start();
 			addMouseListener(this);
+			addMouseMotionListener(this);
 		}
 
 		@Override
@@ -209,13 +216,6 @@ public class KidlyGUI extends JFrame {
             if (IBManager.isCanvasHit(x, y)) {
 				flag = true;
             }
-            /*
-			if (e.getX() > x && e.getX() < x + rectX && e.getY() > y
-					&& e.getY() < y + rectY) {
-				flag = true;
-			}
-            */
-
 		}
 		
 		@Override
@@ -234,18 +234,20 @@ public class KidlyGUI extends JFrame {
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-
 		}
 		
+
 		@Override
 		public void paintComponent(Graphics g) {
 			buffer = createImage(330, 450);
 			bg = buffer.getGraphics();
-			bg.drawString("" + x, 20, 20);
-			bg.drawString("" + y, 20, 40);
             ArrayList<ImageBlock> ibl = this.IBManager.getBlockList();
+            ImageBlock focusBlock = this.IBManager.getHoldedImageBlock();
             for (int i = ibl.size()-1; i>=0; i--) {
                 ImageBlock ib = ibl.get(i);
+                if (ib == focusBlock) {
+                    bg.drawRect(focusBlock.x-1, focusBlock.y-1, focusBlock.width+2, focusBlock.height+2);
+                }
                 bg.drawImage(ib.image, ib.x,ib.y,null);
             }
 			g.drawImage(buffer, 0, 0, null);
@@ -256,6 +258,16 @@ public class KidlyGUI extends JFrame {
 			}
 		}
 
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if(flag){
+				this.IBManager.moveImages(e.getX(), e.getY());
+			}
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+		}
 
 	}
 
@@ -268,7 +280,7 @@ public class KidlyGUI extends JFrame {
 			System.exit(0);
 		}
 	}
-    private class ImageBlockManager{
+    public class ImageBlockManager{
         private ArrayList<ImageBlock> blockList = new ArrayList<ImageBlock>();
         private ImageBlock holdedBlock = null;
         private int offsetX;
@@ -301,14 +313,21 @@ public class KidlyGUI extends JFrame {
             }else{
                 throw new Exception("None holded block");
             }
-            
+        }
+
+        /**
+         * set skew degree for image
+         *  @param:int degree
+         */
+        public void setSkewDegree(int degree){
+            /* TODO */
         }
         
         /**
          * scale image from 1% to 200%
          */
         public void scaleImage(){
-            /* TODO */
+            /*TODO*/
         }
 
         /**
@@ -323,6 +342,14 @@ public class KidlyGUI extends JFrame {
             }
         }
 
+        /**
+         * set scale percentage for 1 to 200
+         *  @param:int scale percentage
+         */
+        public void setScalePercentage(int scale){
+            /* TODO */
+        }
+        
         public void moveImages(int x, int y){
             if (holdedBlock != null) {
                 this.holdedBlock.x = x - this.offsetX;
@@ -335,7 +362,11 @@ public class KidlyGUI extends JFrame {
          * (high Priority to print on canvas
          */
         public void raiseLayout(){
-            /* TODO */
+            int i = this.blockList.indexOf(this.holdedBlock);
+            this.holdedBlock.level = i-1;
+            this.blockList.get(i-i).level = i;
+            Collections.swap(this.blockList, i, i-1);
+            ArrayList<String> arrayList = new ArrayList<String>();
         }
 
         /**
@@ -343,7 +374,10 @@ public class KidlyGUI extends JFrame {
          * (lower Priority to print and may under other layout
          */
         public void reduceLayout(){
-            /* TODO */
+            int i = this.blockList.indexOf(this.holdedBlock);
+            this.holdedBlock.level = i+1;
+            this.blockList.get(i+i).level = i;
+            Collections.swap(this.blockList, i, i+1);
         }
 
         /**
@@ -357,6 +391,13 @@ public class KidlyGUI extends JFrame {
             }else{
                 throw new Exception("None holded block");
             }
+        }
+
+        /**
+         * return holded (clicked) image block
+         */
+        public ImageBlock getHoldedImageBlock(){
+            return this.holdedBlock;
         }
 
         /**
@@ -374,8 +415,27 @@ public class KidlyGUI extends JFrame {
             return false;
         }
 
+        /**
+         * return block list in management for paint on canvas
+         *  @return:arraylist<ImageBlock>
+         */
         public ArrayList<ImageBlock> getBlockList(){
             return this.blockList;
+        }
+
+        /**
+         * return the length of layouts in ImageBlockManager
+         *  @return:int length of layout
+         */
+        public int getLayoutLength(){
+            return this.blockList.size();
+        }
+
+        /**
+         * use indexer to select a image block
+         */
+        private void selectLayout(int index){
+            this.holdedBlock = this.blockList.get(index);
         }
 
     }
