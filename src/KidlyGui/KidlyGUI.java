@@ -1,4 +1,5 @@
 package KidlyGui;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -37,12 +38,19 @@ import java.awt.Panel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
+import java.awt.SystemColor;
 
 public class KidlyGUI extends JFrame {
 
 	private JPanel contentPane;
 	private Image buffer = null;
 	public Graphics bg;
+	public JSlider skewSlider, scaleSlider;
+	public JLabel lbl_scaleNum,lbl_skewNum;
 
 	/**
 	 * Launch the application.
@@ -75,8 +83,6 @@ public class KidlyGUI extends JFrame {
 
 	}
 
-	private final Action action = new SwingAction();
-
 	public void initGui() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 600);
@@ -95,13 +101,23 @@ public class KidlyGUI extends JFrame {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
-		mntmExit.setAction(action);
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		// mntmExit.setAction(action);
 		mnFile.add(mntmExit);
 
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 
 		JMenuItem mntmImportNewPicture = new JMenuItem("import new picture");
+		mntmImportNewPicture.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 		mnEdit.add(mntmImportNewPicture);
 
 		JMenu mnAbout = new JMenu("About");
@@ -124,40 +140,101 @@ public class KidlyGUI extends JFrame {
 		lblSize.setBounds(374, 153, 46, 15);
 		contentPane.add(lblSize);
 
-		JSlider slider = new JSlider();
-		slider.setMinimum(1);
-		slider.setMaximum(200);
-		slider.setBackground(Color.LIGHT_GRAY);
-		slider.setBounds(457, 147, 180, 21);
-		contentPane.add(slider);
+		scaleSlider = new JSlider();
+		scaleSlider.setValue(100);
+		scaleSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				try {
+					if (IBManager != null) {
+						IBManager.holdedBlock.scalePercentage = scaleSlider.getValue();
+						lbl_scaleNum.setText(""+IBManager.holdedBlock.scalePercentage);
+						IBManager.scaleImage();
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		scaleSlider.setMinimum(1);
+		scaleSlider.setMaximum(200);
+		scaleSlider.setBackground(Color.LIGHT_GRAY);
+		scaleSlider.setBounds(457, 174, 180, 21);
+		contentPane.add(scaleSlider);
 
 		JLabel lblRotation = new JLabel("Rotation :");
 		lblRotation.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblRotation.setBounds(374, 236, 63, 15);
+		lblRotation.setBounds(374, 254, 63, 15);
 		contentPane.add(lblRotation);
 
-		JSlider slider_1 = new JSlider();
-		slider_1.setMinimum(-180);
-		slider_1.setMaximum(180);
-		slider_1.setBackground(Color.LIGHT_GRAY);
-		slider_1.setBounds(457, 230, 180, 21);
-		contentPane.add(slider_1);
+		JSlider skewSlider = new JSlider();
+		skewSlider.setValue(0);
+		skewSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
 
-		JLabel label = new JLabel(
-				"-180\u00B0                    0\u00B0                    180\u00B0");
-		label.setBounds(460, 264, 177, 15);
+			}
+		});
+		skewSlider.setMinimum(-180);
+		skewSlider.setMaximum(180);
+		skewSlider.setBackground(Color.LIGHT_GRAY);
+		skewSlider.setBounds(457, 284, 180, 21);
+		contentPane.add(skewSlider);
+
+		JLabel label = new JLabel("-180\u00B0                    0\u00B0                    180\u00B0");
+		label.setBounds(460, 318, 177, 15);
 		contentPane.add(label);
 
-		JLabel label_1 = new JLabel(
-				"1%                    100%                  200%");
-		label_1.setBounds(457, 178, 191, 15);
+		JLabel label_1 = new JLabel("1%                    100%                  200%");
+		label_1.setBounds(457, 205, 191, 15);
 		contentPane.add(label_1);
 
 		JPanel panel = new canvasPanel();
 		panel.setBounds(29, 87, 312, 439);
 		panel.setBackground(Color.WHITE);
 		contentPane.add(panel);
+		
+		lbl_scaleNum = new JLabel("100");
+		lbl_scaleNum.setForeground(Color.RED);
+		lbl_scaleNum.setFont(new Font("新細明體", Font.PLAIN, 13));
+		lbl_scaleNum.setBackground(Color.WHITE);
+		lbl_scaleNum.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_scaleNum.setBounds(457, 154, 113, 15);
+		contentPane.add(lbl_scaleNum);
+		
+		JLabel label_2 = new JLabel("%");
+		label_2.setForeground(Color.RED);
+		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_2.setBounds(547, 154, 46, 15);
+		contentPane.add(label_2);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(357, 129, 302, 97);
+		contentPane.add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(357, 230, 302, 97);
+		contentPane.add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(357, 356, 302, 97);
+		contentPane.add(separator_2);
+		
+		lbl_skewNum = new JLabel("100");
+		lbl_skewNum.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_skewNum.setForeground(Color.RED);
+		lbl_skewNum.setFont(new Font("新細明體", Font.PLAIN, 13));
+		lbl_skewNum.setBackground(Color.WHITE);
+		lbl_skewNum.setBounds(457, 254, 113, 15);
+		contentPane.add(lbl_skewNum);
+		
+		JLabel label_4 = new JLabel("\u00B0");
+		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_4.setForeground(Color.RED);
+		label_4.setBounds(547, 254, 46, 15);
+		contentPane.add(label_4);
 	}
+
+	private ImageBlockManager IBManager;
 
 	public class canvasPanel extends JPanel implements MouseListener {
 
@@ -168,24 +245,22 @@ public class KidlyGUI extends JFrame {
 		boolean flag = false;
 		Graphics g;
 
-        private ImageBlockManager IBManager;
-
 		public canvasPanel() {
-            /* init a ImageBlockManager and load in a picture*/
-            this.IBManager = new ImageBlockManager();
-            BufferedImage bi = null;
-            try{
-                bi = ImageIO.read(new File("test1.jpg"));
-            }catch(IOException e){
-            }
-            ImageBlock ib = new ImageBlock(bi, 0, 0); 
-            this.IBManager.addImageBlock(ib);
-            try{
-                bi = ImageIO.read(new File("test2.jpg"));
-            }catch(IOException e){
-            }
-            ib = new ImageBlock(bi, 0, 0); 
-            this.IBManager.addImageBlock(ib);
+			/* init a ImageBlockManager and load in a picture */
+			IBManager = new ImageBlockManager();
+			BufferedImage bi = null;
+			try {
+				bi = ImageIO.read(new File("test1.jpg"));
+			} catch (IOException e) {
+			}
+			ImageBlock ib = new ImageBlock(bi, 0, 0);
+			IBManager.addImageBlock(ib);
+			try {
+				bi = ImageIO.read(new File("test2.jpg"));
+			} catch (IOException e) {
+			}
+			ib = new ImageBlock(bi, 0, 0);
+			IBManager.addImageBlock(ib);
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -204,26 +279,27 @@ public class KidlyGUI extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            if (IBManager.isCanvasHit(x, y)) {
+			int x = e.getX();
+			int y = e.getY();
+			if (IBManager.isCanvasHit(x, y)) {
 				flag = true;
-            }
-            /*
-			if (e.getX() > x && e.getX() < x + rectX && e.getY() > y
-					&& e.getY() < y + rectY) {
-				flag = true;
+				scaleSlider.setValue(IBManager.holdedBlock.scalePercentage);
+				lbl_scaleNum.setText(""+IBManager.holdedBlock.scalePercentage);
 			}
-            */
+			
+			/*
+			 * if (e.getX() > x && e.getX() < x + rectX && e.getY() > y &&
+			 * e.getY() < y + rectY) { flag = true; }
+			 */
 
 		}
-		
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (flag == true) {
 				int x = e.getX();
 				int y = e.getY();
-                this.IBManager.moveImages(x, y);
+				IBManager.moveImages(x, y);
 				flag = false;
 			}
 		}
@@ -236,18 +312,21 @@ public class KidlyGUI extends JFrame {
 		public void mouseExited(MouseEvent e) {
 
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
+
 			buffer = createImage(330, 450);
 			bg = buffer.getGraphics();
 			bg.drawString("" + x, 20, 20);
 			bg.drawString("" + y, 20, 40);
-            ArrayList<ImageBlock> ibl = this.IBManager.getBlockList();
-            for (int i = ibl.size()-1; i>=0; i--) {
-                ImageBlock ib = ibl.get(i);
-                bg.drawImage(ib.image, ib.x,ib.y,null);
-            }
+			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
+			for (int i = ibl.size() - 1; i >= 0; i--) {
+				ImageBlock ib = ibl.get(i);
+				bg.drawImage(ib.image, ib.x, ib.y, null);
+				bg.drawString("" + ib.scalePercentage, 50 * (i + 1), 20);
+			}
+
 			g.drawImage(buffer, 0, 0, null);
 			try {
 				Thread.sleep(33);
@@ -256,150 +335,154 @@ public class KidlyGUI extends JFrame {
 			}
 		}
 
-
 	}
 
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Exit");
+	private class ImageBlockManager {
+		private ArrayList<ImageBlock> blockList = new ArrayList<ImageBlock>();
+		private ImageBlock holdedBlock = null;
+		private int offsetX;
+		private int offsetY;
+
+		public ImageBlockManager() {
 		}
 
-		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
+		/**
+		 * add a image block to ImageBlockManager
+		 */
+		public void addImageBlock(ImageBlock block) {
+			block.level = blockList.size();
+			this.blockList.add(block);
 		}
-	}
-    private class ImageBlockManager{
-        private ArrayList<ImageBlock> blockList = new ArrayList<ImageBlock>();
-        private ImageBlock holdedBlock = null;
-        private int offsetX;
-        private int offsetY;
 
-        public ImageBlockManager(){
-        }
+		/**
+		 * skew a image from -180 degree to +180 degree
+		 */
+		public void skewImage(int degree) {
+			/* TODO */
+		}
 
-        /**
-         * add a image block to ImageBlockManager
-         */
-        public void addImageBlock(ImageBlock block){
-            block.level = blockList.size();
-            this.blockList.add(block);
-        }
+		/**
+		 * return image skew degree
+		 */
+		public int getSkewDegree() throws Exception {
+			if (this.holdedBlock != null) {
+				return this.holdedBlock.degree;
+			} else {
+				throw new Exception("None holded block");
+			}
 
-        /**
-         * skew a image from -180 degree to +180 degree
-         */
-        public void skewImage(int degree){
-            /* TODO */
-        }
+		}
 
-        /**
-         * return image skew degree
-         */
-        public int getSkewDegree() throws Exception{
-            if (this.holdedBlock != null) {
-                return this.holdedBlock.degree;
-            }else{
-                throw new Exception("None holded block");
-            }
-            
-        }
-        
-        /**
-         * scale image from 1% to 200%
-         */
-        public void scaleImage(){
-            /* TODO */
-        }
+		/**
+		 * scale image from 1% to 200%
+		 * In order to preserve the resolution of the picture,add the preImage variable.
+		 * @throws Exception
+		 */
 
-        /**
-         * return percentage if scale
-         *  @return:int to presentage
-         */
-        public int getScalePercentage() throws Exception{
-            if (this.holdedBlock != null) {
-                return this.holdedBlock.scalePercentage;
-            }else{
-                throw new Exception("None holded block");
-            }
-        }
+		public void scaleImage() throws Exception {
+			Image tempImg = this.holdedBlock.preImage;
+			int width = (int) (this.holdedBlock.width * getScalePercentage() / 100);
+			int height = (int) (this.holdedBlock.height * getScalePercentage() / 100);
 
-        public void moveImages(int x, int y){
-            if (holdedBlock != null) {
-                this.holdedBlock.x = x - this.offsetX;
-                this.holdedBlock.y = y - this.offsetY;
-            }
-        }
+			if(width != 0 && height !=0 ){
+				tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+				this.holdedBlock.image = tempImg;
+			}
+		}
 
-        /**
-         * Raise layout level to higher
-         * (high Priority to print on canvas
-         */
-        public void raiseLayout(){
-            /* TODO */
-        }
+		/**
+		 * return percentage if scale
+		 * 
+		 * @return:int to presentage
+		 */
+		public int getScalePercentage() throws Exception {
+			if (this.holdedBlock != null) {
+				return this.holdedBlock.scalePercentage;
+			} else {
+				throw new Exception("None holded block");
+			}
+		}
 
-        /**
-         * reduce layout level to lower
-         * (lower Priority to print and may under other layout
-         */
-        public void reduceLayout(){
-            /* TODO */
-        }
+		public void moveImages(int x, int y) {
+			if (holdedBlock != null) {
+				this.holdedBlock.x = x - this.offsetX;
+				this.holdedBlock.y = y - this.offsetY;
+			}
+		}
 
-        /**
-         * get level of layout
-         * (higher value means higher priority on canvas)
-         *  @return:int level of layout
-         */
-        public int getLayoutLevel() throws Exception{
-            if (this.holdedBlock != null) {
-                return this.holdedBlock.level;
-            }else{
-                throw new Exception("None holded block");
-            }
-        }
+		/**
+		 * Raise layout level to higher (high Priority to print on canvas
+		 */
+		public void raiseLayout() {
+			/* TODO */
+		}
 
-        /**
-         * Varify is user hit in a image block
-         */
-        public boolean isCanvasHit(int x, int y){
-        	for (ImageBlock ib: this.blockList ) {
-                if (ib.isHit(x, y)) {
-                    this.holdedBlock = ib;
-                    this.offsetX = x - ib.x;
-                    this.offsetY = y - ib.y;
-                    return true;
-                }
-            }
-            return false;
-        }
+		/**
+		 * reduce layout level to lower (lower Priority to print and may under
+		 * other layout
+		 */
+		public void reduceLayout() {
+			/* TODO */
+		}
 
-        public ArrayList<ImageBlock> getBlockList(){
-            return this.blockList;
-        }
+		/**
+		 * get level of layout (higher value means higher priority on canvas)
+		 * 
+		 * @return:int level of layout
+		 */
+		public int getLayoutLevel() throws Exception {
+			if (this.holdedBlock != null) {
+				return this.holdedBlock.level;
+			} else {
+				throw new Exception("None holded block");
+			}
+		}
 
-    }
-    private class ImageBlock{
-        public int scalePercentage = 100;
-        public int degree = 0;
-        public int x;
-        public int y;
-        public int width;
-        public int height;
-        public int level;
-        public BufferedImage image;
-        public ImageBlock(BufferedImage image, int x, int y){
-            this.image = image;
-            this.x = x;
-            this.y = y;
-            this.width = image.getWidth();
-            this.height = image.getHeight();
-        }
-        public boolean isHit(int x, int y){
-            if (x > this.x && x < this.x+this.width && y > this.y && y < this.y+this.height) {
-                return true;
-            }
+		/**
+		 * Varify is user hit in a image block
+		 */
+		public boolean isCanvasHit(int x, int y) {
+			for (ImageBlock ib : this.blockList) {
+				if (ib.isHit(x, y)) {
+					this.holdedBlock = ib;
+					this.offsetX = x - ib.x;
+					this.offsetY = y - ib.y;
+					return true;
+				}
+			}
 			return false;
-        }
-    } 
+		}
+
+		public ArrayList<ImageBlock> getBlockList() {
+			return this.blockList;
+		}
+
+	}
+
+	private class ImageBlock {
+		public int scalePercentage = 100;
+		public int degree = 0;
+		public int x;
+		public int y;
+		public int width;
+		public int height;
+		public int level;
+		public Image preImage,image;
+
+		public ImageBlock(BufferedImage image, int x, int y) {
+			this.image = image;
+			this.preImage = image;
+			this.x = x;
+			this.y = y;
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+		}
+
+		public boolean isHit(int x, int y) {
+			if (x > this.x && x < this.x + this.width && y > this.y && y < this.y + this.height) {
+				return true;
+			}
+			return false;
+		}
+	}
 }
