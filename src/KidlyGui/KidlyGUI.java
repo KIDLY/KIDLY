@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,8 +30,13 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+
 import javax.swing.Action;
 import java.awt.Panel;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class KidlyGUI extends JFrame {
 
@@ -64,7 +70,6 @@ public class KidlyGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-
 	public KidlyGUI() {
 		initGui();
 
@@ -163,7 +168,24 @@ public class KidlyGUI extends JFrame {
 		boolean flag = false;
 		Graphics g;
 
+        private ImageBlockManager IBManager;
+
 		public canvasPanel() {
+            /* init a ImageBlockManager and load in a picture*/
+            this.IBManager = new ImageBlockManager();
+            BufferedImage bi = null;
+            try{
+                bi = ImageIO.read(new File("test1.jpg"));
+            }catch(IOException e){
+            }
+            ImageBlock ib = new ImageBlock(bi, 0, 0); 
+            this.IBManager.addImageBlock(ib);
+            try{
+                bi = ImageIO.read(new File("test2.jpg"));
+            }catch(IOException e){
+            }
+            ib = new ImageBlock(bi, 0, 0); 
+            this.IBManager.addImageBlock(ib);
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -182,19 +204,26 @@ public class KidlyGUI extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			System.out.println("e.getX()" + e.getX() + " e.getY()" + e.getY());
+            int x = e.getX();
+            int y = e.getY();
+            if (IBManager.isCanvasHit(x, y)) {
+				flag = true;
+            }
+            /*
 			if (e.getX() > x && e.getX() < x + rectX && e.getY() > y
 					&& e.getY() < y + rectY) {
 				flag = true;
 			}
+            */
 
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (flag == true) {
-				x = e.getX() - rectX / 2;
-				y = e.getY() - rectY / 2;
+				int x = e.getX();
+				int y = e.getY();
+                this.IBManager.moveImages(x, y);
 				flag = false;
 			}
 		}
@@ -214,8 +243,11 @@ public class KidlyGUI extends JFrame {
 			bg = buffer.getGraphics();
 			bg.drawString("" + x, 20, 20);
 			bg.drawString("" + y, 20, 40);
-			bg.drawRect(x, y, rectX, rectY);
-
+            ArrayList<ImageBlock> ibl = this.IBManager.getBlockList();
+            for (int i = ibl.size()-1; i>=0; i--) {
+                ImageBlock ib = ibl.get(i);
+                bg.drawImage(ib.image, ib.x,ib.y,null);
+            }
 			g.drawImage(buffer, 0, 0, null);
 			try {
 				Thread.sleep(33);
@@ -236,4 +268,138 @@ public class KidlyGUI extends JFrame {
 			System.exit(0);
 		}
 	}
+    private class ImageBlockManager{
+        private ArrayList<ImageBlock> blockList = new ArrayList<ImageBlock>();
+        private ImageBlock holdedBlock = null;
+        private int offsetX;
+        private int offsetY;
+
+        public ImageBlockManager(){
+        }
+
+        /**
+         * add a image block to ImageBlockManager
+         */
+        public void addImageBlock(ImageBlock block){
+            block.level = blockList.size();
+            this.blockList.add(block);
+        }
+
+        /**
+         * skew a image from -180 degree to +180 degree
+         */
+        public void skewImage(int degree){
+            /* TODO */
+        }
+
+        /**
+         * return image skew degree
+         */
+        public int getSkewDegree() throws Exception{
+            if (this.holdedBlock != null) {
+                return this.holdedBlock.degree;
+            }else{
+                throw new Exception("None holded block");
+            }
+            
+        }
+        
+        /**
+         * scale image from 1% to 200%
+         */
+        public void scaleImage(){
+            /* TODO */
+        }
+
+        /**
+         * return percentage if scale
+         *  @return:int to presentage
+         */
+        public int getScalePercentage() throws Exception{
+            if (this.holdedBlock != null) {
+                return this.holdedBlock.scalePercentage;
+            }else{
+                throw new Exception("None holded block");
+            }
+        }
+
+        public void moveImages(int x, int y){
+            if (holdedBlock != null) {
+                this.holdedBlock.x = x - this.offsetX;
+                this.holdedBlock.y = y - this.offsetY;
+            }
+        }
+
+        /**
+         * Raise layout level to higher
+         * (high Priority to print on canvas
+         */
+        public void raiseLayout(){
+            /* TODO */
+        }
+
+        /**
+         * reduce layout level to lower
+         * (lower Priority to print and may under other layout
+         */
+        public void reduceLayout(){
+            /* TODO */
+        }
+
+        /**
+         * get level of layout
+         * (higher value means higher priority on canvas)
+         *  @return:int level of layout
+         */
+        public int getLayoutLevel() throws Exception{
+            if (this.holdedBlock != null) {
+                return this.holdedBlock.level;
+            }else{
+                throw new Exception("None holded block");
+            }
+        }
+
+        /**
+         * Varify is user hit in a image block
+         */
+        public boolean isCanvasHit(int x, int y){
+        	for (ImageBlock ib: this.blockList ) {
+                if (ib.isHit(x, y)) {
+                    this.holdedBlock = ib;
+                    this.offsetX = x - ib.x;
+                    this.offsetY = y - ib.y;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public ArrayList<ImageBlock> getBlockList(){
+            return this.blockList;
+        }
+
+    }
+    private class ImageBlock{
+        public int scalePercentage = 100;
+        public int degree = 0;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+        public int level;
+        public BufferedImage image;
+        public ImageBlock(BufferedImage image, int x, int y){
+            this.image = image;
+            this.x = x;
+            this.y = y;
+            this.width = image.getWidth();
+            this.height = image.getHeight();
+        }
+        public boolean isHit(int x, int y){
+            if (x > this.x && x < this.x+this.width && y > this.y && y < this.y+this.height) {
+                return true;
+            }
+			return false;
+        }
+    } 
 }
