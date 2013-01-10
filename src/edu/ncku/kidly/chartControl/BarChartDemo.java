@@ -37,6 +37,7 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 import edu.ncku.kidly.canvas.KIDLYCanvas;
+import edu.ncku.kidly.canvas.KIDLYDraw;
 
 /**
  * A simple demonstration application showing how to create an Bar chart using data from a
@@ -120,7 +121,6 @@ public class BarChartDemo extends ApplicationFrame {
                 g2.setColor(Color.white);
                 g2.drawImage(image, null,0,0);
                 
-                
                 //改變區域顏色
                 CategoryItemRenderer renderer = p.getRenderer(); 
                 renderer.setSeriesPaint(0, Color.cyan);
@@ -150,6 +150,13 @@ public class BarChartDemo extends ApplicationFrame {
         			// TODO Auto-generated catch block
         			e1.printStackTrace();
         		}
+				KIDLYDraw mDraw = new KIDLYDraw();
+				BufferedImage temp = mDraw.loadImageLocal("img/myChart.png");
+				mDraw.setImage(20,20,"img/piece.jpg");
+				mDraw.setRange(50, 150, 10, 50);
+				mDraw.drawOn(temp.getGraphics());
+				mDraw.writeImageLocal("img/new_myChart.png", temp);
+				
 			}
 		});
         

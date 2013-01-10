@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 public class KIDLYCanvas extends Canvas{
 	BufferedImage mImage;
-	int begin_x,end_x,begin_y,end_y;
+	int begin_x,width,begin_y,height;
 	public KIDLYCanvas(){
 		super();
 		
@@ -31,11 +31,11 @@ public class KIDLYCanvas extends Canvas{
         g2.drawImage((BufferedImage)i, 0,0,scalewidth,scaleheight, null);
 //		this.mImage = (BufferedImage) i;
 	}
-	public void setRange(int beginx,int beginy,int endx,int endy){
+	public void setRange(int beginx,int beginy,int width,int height){
 		this.begin_x = beginx;
-		this.end_x = endx;
+		this.width = width;
 		this.begin_y = beginy;
-		this.end_y = endy;
+		this.height = height;
 	}
 	public void paint(Graphics g)
 	{
