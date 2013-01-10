@@ -22,7 +22,7 @@ public class FileChooser {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Format Only", "csv");
 		chooser.setFileFilter(filter);
 
-		//retVal = chooser.showOpenDialog(null);
+		int retVal = chooser.showOpenDialog(null);
 		
 	}
 	
