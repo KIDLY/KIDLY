@@ -1,5 +1,6 @@
 package dot;
 
+import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,11 +25,15 @@ import org.jfree.data.io.CSV;
 public class KidlyInCsv extends JFrame{
 
 	private JPanel inCsvPanel = null;
-	private JButton openFileButton = null;
+	private JButton openCsvButton = null;
+	private JButton openXmlButton = null;
 	private JButton genChartButton = null;
 	private JLabel inPathLabel1 = null;
 	private JLabel inPathLabel2 = null;
-	private String path = null;
+	private String csvPath = null;
+	private String xmlPath = null;
+	private Choice chartTypeChoice = null;
+	
 	
 	private void initialize() {
 		
@@ -41,32 +46,51 @@ public class KidlyInCsv extends JFrame{
 		inCsvPanel.setLayout(null);
 		this.setContentPane(inCsvPanel);
 		
-		//Set Open File Button 
-		openFileButton = new JButton("OpenFile");
-		openFileButton.addActionListener( new ActionListener() {
+		//Set Open Csv File Button 
+		openCsvButton = new JButton("Open Csv File");
+		openCsvButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				
 				// Choose File
-				openFileButton.setVisible(false);
-				FileChooser chooser = new FileChooser();
-				path = chooser.getPath();
-				inPathLabel2.setText(path);
-				openFileButton.setVisible(true);
+				openCsvButton.setVisible(false);
+				FileChooser chooser = new FileChooser("csv");
+				csvPath = chooser.getPath();
+				inPathLabel2.setText("Path:" + csvPath);
+				openCsvButton.setVisible(true);
 				
 			}
 		});
-		openFileButton.setBounds(10, 0, 300, 50);
-		inCsvPanel.add(openFileButton);
+		openCsvButton.setBounds(10, 5, 200, 30);
+		inCsvPanel.add(openCsvButton);
+		
+		
+		//Set Open Xml File Button
+		openXmlButton = new JButton("Open Xml File");
+		openXmlButton.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				
+				// Choose File
+				openXmlButton.setVisible(false);
+				FileChooser chooser = new FileChooser("xml");
+				xmlPath = chooser.getPath();
+				inPathLabel2.setText("Path:" + xmlPath);
+				openXmlButton.setVisible(true);
+				
+			}
+		});
+		openXmlButton.setBounds(10, 70, 200, 30);
+		inCsvPanel.add(openXmlButton);
+		
 		
 		//Set Input File Path Label
-		inPathLabel1 = new JLabel("Input File Path :");
+		inPathLabel1 = new JLabel("CSV_Path: Test csvPath.");
 		inPathLabel1.setFont(new Font("Arial", Font.PLAIN, 14));
-		inPathLabel1.setBounds(10, 50, 300, 50);
+		inPathLabel1.setBounds(10, 40, 300, 20);
 		inCsvPanel.add(inPathLabel1);
 
-		inPathLabel2 = new JLabel("Test Path");
+		inPathLabel2 = new JLabel("XML_Path: Test xmlPath");
 		inPathLabel2.setFont(new Font("Arial", Font.PLAIN, 14));
-		inPathLabel2.setBounds(10, 100, 300, 50);
+		inPathLabel2.setBounds(10, 105, 300, 20);
 		inCsvPanel.add(inPathLabel2);
 		
 		//Set Generate JFreeChart Button
@@ -80,7 +104,7 @@ public class KidlyInCsv extends JFrame{
 				
 				try {
 					
-					reader = new FileReader(path);
+					reader = new FileReader(csvPath);
 					
 					dataSet = (new CSV(';','"')).readCategoryDataset(reader);
 					reader.close();	
@@ -90,7 +114,9 @@ public class KidlyInCsv extends JFrame{
 				} catch (IOException e1){
 					e1.printStackTrace();
 				}
-				  
+				
+				String selectType = chartTypeChoice.getSelectedItem();
+		        System.out.println(selectType);
 			
 				//Test Generate Line Chart
 				JFreeChart chart = ChartFactory.createLineChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
@@ -110,6 +136,17 @@ public class KidlyInCsv extends JFrame{
 		inCsvPanel.add(genChartButton);
 		
 		
+		//Set Choice Kinds of Chart
+		chartTypeChoice = new Choice();
+		
+        String [] chartType = {"Bar Chart", "Pie Chart", "Line Chart","Area Chart", "Histogram"};
+        
+        for( int i=0 ; i<chartType.length ; i++ )
+            chartTypeChoice.add(chartType[i]);
+        chartTypeChoice.setBounds(250, 5, 200, 30);
+        inCsvPanel.add(chartTypeChoice);
+        
+        
 	}
 	
 	

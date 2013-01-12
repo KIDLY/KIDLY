@@ -6,11 +6,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FileChooser {
 
 	private JFileChooser chooser = null;
+	private String format = null;
 	//private int retVal = 0;
 	
-	public FileChooser() {
+	public FileChooser(String format) {
 		
 		super();
+		this.format = format;
 		initialize();
 	
 	}
@@ -19,7 +21,7 @@ public class FileChooser {
 		
 		chooser = new JFileChooser();
 
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Format Only", "csv");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(format + " Format Only", format);
 		chooser.setFileFilter(filter);
 
 		int retVal = chooser.showOpenDialog(null);
