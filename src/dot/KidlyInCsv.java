@@ -33,6 +33,7 @@ public class KidlyInCsv extends JFrame{
 	private String csvPath = null;
 	private String xmlPath = null;
 	private Choice chartTypeChoice = null;
+	private ChartPanel chartPanel = null;
 	
 	
 	private void initialize() {
@@ -55,7 +56,7 @@ public class KidlyInCsv extends JFrame{
 				openCsvButton.setVisible(false);
 				FileChooser chooser = new FileChooser("csv");
 				csvPath = chooser.getPath();
-				inPathLabel2.setText("Path:" + csvPath);
+				inPathLabel1.setText("Path:" + csvPath);
 				openCsvButton.setVisible(true);
 				
 			}
@@ -119,9 +120,16 @@ public class KidlyInCsv extends JFrame{
 		        System.out.println(selectType);
 			
 				//Test Generate Line Chart
-				JFreeChart chart = ChartFactory.createLineChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
+		        KidlyInitChartFactory factory = new KidlyInitChartFactory();
+		        JFreeChart chart = factory.createChart(selectType,dataSet);
+		        
+		        
+		        //JFreeChart chart = ChartFactory.createLineChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
 				
-				ChartPanel chartPanel = new ChartPanel(chart);
+		        if(chartPanel != null){
+		        	inCsvPanel.remove(chartPanel);
+		        }
+				chartPanel = new ChartPanel(chart);
 		        chartPanel.setFillZoomRectangle(true);
 		        chartPanel.setMouseWheelEnabled(true);
 		        chartPanel.setPreferredSize(new Dimension(500, 270));
