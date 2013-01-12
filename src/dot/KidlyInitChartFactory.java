@@ -4,6 +4,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.CategoryToPieDataset;
+import org.jfree.util.TableOrder;
 
 public class KidlyInitChartFactory {
 
@@ -23,9 +25,10 @@ public class KidlyInitChartFactory {
 			chart = ChartFactory.createLineChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
 		else if( chartType.equals("Area Chart") )
 			chart = ChartFactory.createAreaChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
-		//else if( chartType.equals("Pie Chart") )
-		//	chart = ChartFactory.createPieChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
-		//else if( chartType.equals("Histogram") )
+		else if( chartType.equals("Pie Chart") ){
+			CategoryToPieDataset categoryToPieDataset = new CategoryToPieDataset(dataSet, TableOrder.BY_ROW , 1);
+			chart = ChartFactory.createPieChart("Label",categoryToPieDataset,true,true,false);
+		}//else if( chartType.equals("Histogram") )
 		//	chart = ChartFactory.createHistogram("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
 		else
 			return null;
