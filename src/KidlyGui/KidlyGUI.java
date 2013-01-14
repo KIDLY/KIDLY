@@ -137,10 +137,9 @@ public class KidlyGUI extends JFrame {
 		scaleSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				try {
-					if (IBManager != null) {
-						IBManager.holdedBlock.scalePercentage = scaleSlider.getValue();
+					if (IBManager.holdedBlock != null) {
+						IBManager.scaleImage(scaleSlider.getValue());
 						lbl_scaleNum.setText("" + IBManager.holdedBlock.scalePercentage);
-						IBManager.scaleImage();
 					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -160,7 +159,7 @@ public class KidlyGUI extends JFrame {
 
 		lbl_scaleNum = new JLabel("100");
 		lbl_scaleNum.setForeground(Color.RED);
-		lbl_scaleNum.setFont(new Font("·s²Ó©úÅé", Font.PLAIN, 13));
+		lbl_scaleNum.setFont(new Font("ï¿½sï¿½Ó©ï¿½ï¿½ï¿½", Font.PLAIN, 13));
 		lbl_scaleNum.setBackground(Color.WHITE);
 		lbl_scaleNum.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_scaleNum.setBounds(457, 154, 113, 15);
@@ -179,7 +178,7 @@ public class KidlyGUI extends JFrame {
 				try {
 					if (IBManager != null) {
 						lbl_skewNum.setText("" + IBManager.holdedBlock.degree);
-						IBManager.skewImage((float)skewSlider.getValue()/180);
+						IBManager.skewImage(skewSlider.getValue());
 					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -196,7 +195,7 @@ public class KidlyGUI extends JFrame {
 		lbl_skewNum = new JLabel("100");
 		lbl_skewNum.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_skewNum.setForeground(Color.RED);
-		lbl_skewNum.setFont(new Font("·s²Ó©úÅé", Font.PLAIN, 13));
+		lbl_skewNum.setFont(new Font("ï¿½sï¿½Ó©ï¿½ï¿½ï¿½", Font.PLAIN, 13));
 		lbl_skewNum.setBackground(Color.WHITE);
 		lbl_skewNum.setBounds(457, 254, 113, 15);
 		contentPane.add(lbl_skewNum);
@@ -288,6 +287,9 @@ public class KidlyGUI extends JFrame {
 				flag = true;
 				scaleSlider.setValue(IBManager.holdedBlock.scalePercentage);
 				lbl_scaleNum.setText("" + IBManager.holdedBlock.scalePercentage);
+				skewSlider.setValue(IBManager.holdedBlock.degree);
+				lbl_skewNum.setText("" + IBManager.holdedBlock.degree);
+
 			}
 
 			/*
@@ -319,18 +321,16 @@ public class KidlyGUI extends JFrame {
 		public void paintComponent(Graphics g) {
 
 			buffer = new BufferedImage(330, 450,BufferedImage.TYPE_INT_RGB);
-			bg = (Graphics2D) buffer.getGraphics();
+			bg = buffer.createGraphics();
 			bg.setBackground(Color.WHITE);
 			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
 			ImageBlock focusBlock = IBManager.getHoldedImageBlock();
 			for (int i = ibl.size() - 1; i >= 0; i--) {
 				ImageBlock ib = ibl.get(i);
-				if (ib == focusBlock) {
-					bg.setColor(Color.BLUE);
-					bg.drawRect(focusBlock.x - 1, focusBlock.y - 1, focusBlock.width + 2, focusBlock.height + 2);
-					bg.setColor(Color.BLACK);
+                if (focusBlock == ib) {
+                    ib.paintOnGraphics2D(bg);
 				}
-				bg.drawImage(ib.image, ib.x, ib.y, null);
+				ib.paintOnGraphics2D(bg);
 			}
 			g.drawImage(buffer, 0, 0, null);
 			try {
@@ -365,7 +365,7 @@ public class KidlyGUI extends JFrame {
 		 * add a image block to ImageBlockManager
 		 */
 		public void addImageBlock(ImageBlock block) {
-			block.level = blockList.size();
+			block.level = this.blockList.size();
 			this.blockList.add(block);
 		}
 
@@ -374,23 +374,9 @@ public class KidlyGUI extends JFrame {
 		 * 
 		 * @throws Exception
 		 */
-		public void skewImage(float degree) throws Exception {
+		public void skewImage(int degree) throws Exception {
 			if (this.holdedBlock != null) {
-
-				BufferedImage tempImg = this.holdedBlock.preImage;
-				
-				int type = tempImg.getColorModel().getTransparency();
-				BufferedImage img = new BufferedImage(tempImg.getWidth(), tempImg.getHeight(), type);
-				Graphics2D graphics2d=img.createGraphics();
-				
-				graphics2d.translate(tempImg.getWidth() / 2, tempImg.getHeight() / 2);
-				graphics2d.rotate(degree*Math.PI, tempImg.getWidth() / 2, tempImg.getHeight() / 2);
-				graphics2d.drawImage(tempImg, -tempImg.getWidth() / 2,-tempImg.getHeight() / 2, Color.WHITE,null);
-				AffineTransform at = (AffineTransform)(graphics2d.getTransform().clone());
-				graphics2d.setTransform(at);
-				graphics2d.dispose();
-				this.holdedBlock.image = img;
-				
+                this.holdedBlock.degree = degree;
 			} else {
 				throw new Exception("None holded block");
 			}
@@ -421,16 +407,9 @@ public class KidlyGUI extends JFrame {
 		 * 
 		 * @throws Exception
 		 */
-		public void scaleImage() throws Exception {
-			BufferedImage tempImg = this.holdedBlock.preImage;
-			int width = (int) (this.holdedBlock.preWidth * getScalePercentage() / 100);
-			int height = (int) (this.holdedBlock.preHeight * getScalePercentage() / 100);
-
-			if (width != 0 && height != 0) {
-				tempImg = (BufferedImage) tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-				this.holdedBlock.image = tempImg;
-				this.holdedBlock.height = height;
-				this.holdedBlock.width = width;
+		public void scaleImage(int scalePercentage) throws Exception {
+			if (holdedBlock!= null) { 
+				this.holdedBlock.scalePercentage = scalePercentage;
 			}
 		}
 
@@ -574,6 +553,15 @@ public class KidlyGUI extends JFrame {
 			}
 			return false;
 		}
+        public void paintOnGraphics2D(Graphics2D bg){
+            AffineTransform at = new AffineTransform();
+            at.translate(this.x, this.y);
+            at.translate(this.width /2, this.height/2);
+            at.rotate(Math.PI*this.degree/180);
+            at.scale((float)this.scalePercentage/100, (float)this.scalePercentage/100);
+            at.translate(-this.width /2, -this.height/2);
+            bg.drawImage(this.image, at, null);
+        }
 			
 			
 	}
