@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+       <setting>
+              <symbol>Citibank</symbol>
+              <price>100</price>
+              <quantity>1000</quantity>
+       </setting>
+       <setting>
+              <symbol>Axis bank</symbol>
+              <price>90</price>
+              <quantity>2000</quantity>
+       </setting>
+</settings>

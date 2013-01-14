@@ -3,3 +3,6 @@
 # Package Files #
 *.war
 *.ear
+
+# output filte
+junit_output
