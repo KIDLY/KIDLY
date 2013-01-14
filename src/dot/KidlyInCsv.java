@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,11 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.io.CSV;
+import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.statistics.HistogramType;
+import org.jfree.data.xy.DefaultTableXYDataset;
+import org.jfree.data.xy.XYSeries;
 
 
 public class KidlyInCsv extends JFrame{
@@ -39,7 +45,7 @@ public class KidlyInCsv extends JFrame{
 	private void initialize() {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("¿ï¨úÀÉ®×");
+		this.setTitle("Generate Chart");
 		this.setBounds(100, 100, 700, 600);
 		this.setVisible(true);
 		
@@ -147,7 +153,7 @@ public class KidlyInCsv extends JFrame{
 		//Set Choice Kinds of Chart
 		chartTypeChoice = new Choice();
 		
-        String [] chartType = {"Bar Chart", "Pie Chart", "Line Chart","Area Chart", "Histogram"};
+        String [] chartType = {"Bar Chart", "Pie Chart", "Line Chart","Area Chart"};
         
         for( int i=0 ; i<chartType.length ; i++ )
             chartTypeChoice.add(chartType[i]);
@@ -171,7 +177,7 @@ public class KidlyInCsv extends JFrame{
 	public static void main(String[] args) {
 		
 		new KidlyInCsv();
-	
+	    
 	}
 
 }
