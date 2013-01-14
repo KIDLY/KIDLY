@@ -1,60 +1,46 @@
 package KidlyGui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.MouseInputListener;
-import javax.swing.JToolBar;
-import javax.swing.JEditorPane;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
-import java.awt.Canvas;
-import javax.swing.JSpinner;
 import java.awt.Color;
-import javax.swing.JLabel;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
-import javax.swing.Action;
-
-import java.util.Collections;
-
-import java.awt.Panel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.SwingConstants;
+import java.util.Collections;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import java.awt.SystemColor;
-import javax.swing.JButton;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class KidlyGUI extends JFrame {
 
 	private JPanel contentPane;
-	private Image buffer = null;
-	public Graphics bg;
+	private BufferedImage buffer = null;
+	public Graphics2D bg;
 	public JSlider skewSlider, scaleSlider;
 	public JLabel lbl_scaleNum, lbl_skewNum;
 
@@ -100,7 +86,7 @@ public class KidlyGUI extends JFrame {
 		contentPane.setLayout(null);
 
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 676, 21);
+		menuBar.setBounds(0, 0, 684, 21);
 		contentPane.add(menuBar);
 
 		JMenu mnFile = new JMenu("File");
@@ -168,36 +154,9 @@ public class KidlyGUI extends JFrame {
 		scaleSlider.setBounds(457, 174, 180, 21);
 		contentPane.add(scaleSlider);
 
-		JLabel lblRotation = new JLabel("Rotation :");
-		lblRotation.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblRotation.setBounds(374, 254, 63, 15);
-		contentPane.add(lblRotation);
-
-		JSlider skewSlider = new JSlider();
-		skewSlider.setValue(0);
-		skewSlider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-
-			}
-		});
-		skewSlider.setMinimum(-180);
-		skewSlider.setMaximum(180);
-		skewSlider.setBackground(Color.LIGHT_GRAY);
-		skewSlider.setBounds(457, 284, 180, 21);
-		contentPane.add(skewSlider);
-
-		JLabel label = new JLabel("-180\u00B0                    0\u00B0                    180\u00B0");
-		label.setBounds(460, 318, 177, 15);
-		contentPane.add(label);
-
 		JLabel label_1 = new JLabel("1%                    100%                  200%");
 		label_1.setBounds(457, 205, 191, 15);
 		contentPane.add(label_1);
-
-		JPanel panel = new canvasPanel();
-		panel.setBounds(29, 87, 312, 439);
-		panel.setBackground(Color.WHITE);
-		contentPane.add(panel);
 
 		lbl_scaleNum = new JLabel("100");
 		lbl_scaleNum.setForeground(Color.RED);
@@ -206,6 +165,50 @@ public class KidlyGUI extends JFrame {
 		lbl_scaleNum.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_scaleNum.setBounds(457, 154, 113, 15);
 		contentPane.add(lbl_scaleNum);
+
+		JLabel lblRotation = new JLabel("Rotation :");
+		lblRotation.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblRotation.setBounds(374, 254, 63, 15);
+		contentPane.add(lblRotation);
+
+		skewSlider = new JSlider();
+		skewSlider.setMinimum(-180);
+		skewSlider.setValue(0);
+		skewSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				try {
+					if (IBManager != null) {
+						lbl_skewNum.setText("" + IBManager.holdedBlock.degree);
+						IBManager.skewImage((float)skewSlider.getValue()/180);
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		skewSlider.setMaximum(180);
+		skewSlider.setBackground(Color.LIGHT_GRAY);
+		skewSlider.setBounds(457, 284, 180, 21);
+		contentPane.add(skewSlider);
+
+		lbl_skewNum = new JLabel("100");
+		lbl_skewNum.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_skewNum.setForeground(Color.RED);
+		lbl_skewNum.setFont(new Font("新細明體", Font.PLAIN, 13));
+		lbl_skewNum.setBackground(Color.WHITE);
+		lbl_skewNum.setBounds(457, 254, 113, 15);
+		contentPane.add(lbl_skewNum);
+
+		JLabel label = new JLabel("-180\u00B0                    0\u00B0                    180\u00B0");
+		label.setBounds(460, 318, 177, 15);
+		contentPane.add(label);
+
+		JPanel panel = new canvasPanel();
+		panel.setBounds(29, 87, 312, 439);
+		panel.setBackground(Color.WHITE);
+		contentPane.add(panel);
 
 		JLabel label_2 = new JLabel("%");
 		label_2.setForeground(Color.RED);
@@ -225,27 +228,11 @@ public class KidlyGUI extends JFrame {
 		separator_2.setBounds(357, 356, 302, 97);
 		contentPane.add(separator_2);
 
-		lbl_skewNum = new JLabel("100");
-		lbl_skewNum.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_skewNum.setForeground(Color.RED);
-		lbl_skewNum.setFont(new Font("新細明體", Font.PLAIN, 13));
-		lbl_skewNum.setBackground(Color.WHITE);
-		lbl_skewNum.setBounds(457, 254, 113, 15);
-		contentPane.add(lbl_skewNum);
-
 		JLabel label_4 = new JLabel("\u00B0");
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_4.setForeground(Color.RED);
 		label_4.setBounds(547, 254, 46, 15);
 		contentPane.add(label_4);
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(496, 49, 46, 15);
-		contentPane.add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(572, 54, 87, 23);
-		contentPane.add(btnNewButton);
 	}
 
 	private ImageBlockManager IBManager;
@@ -331,14 +318,17 @@ public class KidlyGUI extends JFrame {
 		@Override
 		public void paintComponent(Graphics g) {
 
-			buffer = createImage(330, 450);
-			bg = buffer.getGraphics();
+			buffer = new BufferedImage(330, 450,BufferedImage.TYPE_INT_RGB);
+			bg = (Graphics2D) buffer.getGraphics();
+			bg.setBackground(Color.WHITE);
 			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
 			ImageBlock focusBlock = IBManager.getHoldedImageBlock();
 			for (int i = ibl.size() - 1; i >= 0; i--) {
 				ImageBlock ib = ibl.get(i);
 				if (ib == focusBlock) {
+					bg.setColor(Color.BLUE);
 					bg.drawRect(focusBlock.x - 1, focusBlock.y - 1, focusBlock.width + 2, focusBlock.height + 2);
+					bg.setColor(Color.BLACK);
 				}
 				bg.drawImage(ib.image, ib.x, ib.y, null);
 			}
@@ -381,9 +371,29 @@ public class KidlyGUI extends JFrame {
 
 		/**
 		 * skew a image from -180 degree to +180 degree
+		 * 
+		 * @throws Exception
 		 */
-		public void skewImage(int degree) {
-			/* TODO */
+		public void skewImage(float degree) throws Exception {
+			if (this.holdedBlock != null) {
+
+				BufferedImage tempImg = this.holdedBlock.preImage;
+				
+				int type = tempImg.getColorModel().getTransparency();
+				BufferedImage img = new BufferedImage(tempImg.getWidth(), tempImg.getHeight(), type);
+				Graphics2D graphics2d=img.createGraphics();
+				
+				graphics2d.translate(tempImg.getWidth() / 2, tempImg.getHeight() / 2);
+				graphics2d.rotate(degree*Math.PI, tempImg.getWidth() / 2, tempImg.getHeight() / 2);
+				graphics2d.drawImage(tempImg, -tempImg.getWidth() / 2,-tempImg.getHeight() / 2, Color.WHITE,null);
+				AffineTransform at = (AffineTransform)(graphics2d.getTransform().clone());
+				graphics2d.setTransform(at);
+				graphics2d.dispose();
+				this.holdedBlock.image = img;
+				
+			} else {
+				throw new Exception("None holded block");
+			}
 		}
 
 		/**
@@ -412,12 +422,12 @@ public class KidlyGUI extends JFrame {
 		 * @throws Exception
 		 */
 		public void scaleImage() throws Exception {
-			Image tempImg = this.holdedBlock.preImage;
+			BufferedImage tempImg = this.holdedBlock.preImage;
 			int width = (int) (this.holdedBlock.preWidth * getScalePercentage() / 100);
 			int height = (int) (this.holdedBlock.preHeight * getScalePercentage() / 100);
 
 			if (width != 0 && height != 0) {
-				tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+				tempImg = (BufferedImage) tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 				this.holdedBlock.image = tempImg;
 				this.holdedBlock.height = height;
 				this.holdedBlock.width = width;
@@ -545,7 +555,7 @@ public class KidlyGUI extends JFrame {
 		public int preWidth, width;
 		public int preHeight, height;
 		public int level;
-		public Image preImage, image;
+		public BufferedImage preImage, image;
 
 		public ImageBlock(BufferedImage image, int x, int y) {
 			this.image = image;
@@ -564,5 +574,7 @@ public class KidlyGUI extends JFrame {
 			}
 			return false;
 		}
+			
+			
 	}
 }
