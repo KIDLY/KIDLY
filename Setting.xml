@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
        <setting>
-              <symbol>Citibank</symbol>
-              <price>100</price>
-              <quantity>1000</quantity>
-       </setting>
-       <setting>
-              <symbol>Axis bank</symbol>
-              <price>90</price>
-              <quantity>2000</quantity>
+              <materialSizeX>50</materialSizeX>
+              <materialSizeY>50</materialSizeY>
+              <dataBgName>test.jpg</dataBgName>
+			  <chartBgName>test.jpg</chartBgName> 
+			  <x_AxisName>time</x_AxisName>
+			  <y_AxisName>people</y_AxisName>
+			  <categorySize>10</categorySize>
+			  <chartTitle>Test chart</chartTitle>
+			  <seriesPaint>red</seriesPaint>
        </setting>
 </settings>

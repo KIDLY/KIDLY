@@ -12,32 +12,68 @@ import org.w3c.dom.NodeList;
 
 public class Parser {
 
-	public static void main(String args[]) {
-		try {
+	public String materialSizeX;
+	public String materialSizeY;
+	public String databgname;
+	public String chartbgname;
+	public String x_AxisName;
+	public String y_AxisName;
+	public String categorySize;
+	public String chartTitle;
+	public String seriesPaint;
+	
+	public Parser(String xmlPath) {
+		
+		setparser(xmlPath);
+	}
 
-			File stocks = new File("Setting.xml");
+	public void setparser(String xmlPath) {
+		try {
+			File setting = new File(xmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(stocks);
+			Document doc = dBuilder.parse(setting);
 			doc.getDocumentElement().normalize();
 
-			System.out.println("root of xml file"
-					+ doc.getDocumentElement().getNodeName());
+			//System.out.println("root of xml file"
+			//		+ doc.getDocumentElement().getNodeName());
 			NodeList nodes = doc.getElementsByTagName("setting");
-			System.out.println("==========================");
+			//System.out.println("==========================");
 
 			for (int i = 0; i < nodes.getLength(); i++) {
-				Node node = nodes.item(i);
+				Node node = nodes.item(0);
 
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
-					System.out.println("Stock Symbol: "
-							+ getValue("symbol", element));
-					System.out.println("Stock Price: "
-							+ getValue("price", element));
-					System.out.println("Stock Quantity: "
-							+ getValue("quantity", element));
+					materialSizeX = getValue("materialSizeX", element);
+					materialSizeY = getValue("materialSizeY", element);
+					databgname = getValue("databgname", element);
+					chartbgname = getValue("chartbgname", element);
+					x_AxisName = getValue("x_AxisName", element);
+					y_AxisName = getValue("y_AxisName", element);
+					categorySize = getValue("categorySize", element);
+					chartTitle = getValue("chartTitle", element);
+					seriesPaint = getValue("seriesPaint", element);
+					
+					System.out.println("materialSizeX: "
+							+ materialSizeX);
+					System.out.println("materialSizeY: "
+							+ materialSizeY);
+					System.out.println("databgname: "
+							+ databgname);
+					System.out.println("chartbgname: "
+							+ chartbgname);
+					System.out.println("x_AxisName: "
+							+ x_AxisName);
+					System.out.println("y_AxisName: "
+							+ y_AxisName);
+					System.out.println("categorySize: "
+							+ categorySize);
+					System.out.println("chartTitle: "
+							+ chartTitle);
+					System.out.println("seriesPaint: "
+							+ seriesPaint);
 				}
 			}
 		} catch (Exception ex) {
