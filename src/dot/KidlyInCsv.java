@@ -125,13 +125,11 @@ public class KidlyInCsv extends JFrame{
 				String selectType = chartTypeChoice.getSelectedItem();
 		        System.out.println(selectType);
 			
-				//Test Generate Line Chart
+				//Generate Chart
 		        KidlyInitChartFactory factory = new KidlyInitChartFactory();
 		        JFreeChart chart = factory.createChart(selectType,dataSet);
 		        
-		        
-		        //JFreeChart chart = ChartFactory.createLineChart("Label","X","Y",dataSet,PlotOrientation.VERTICAL,true,true,false);
-				
+		        				
 		        if(chartPanel != null){
 		        	inCsvPanel.remove(chartPanel);
 		        }
