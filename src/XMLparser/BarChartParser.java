@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class BarChartParser {
+public class BarChartParser extends Parser{
 
 	public String materialSizeX;
 	public String materialSizeY;
@@ -20,14 +20,16 @@ public class BarChartParser {
 	public String y_AxisName;
 	public String categorySize;
 	public String chartTitle;
-	public String seriesPaint;
+//	public String seriesPaint;
+	public boolean check;
 	
 	public BarChartParser(String xmlPath) {
+		super(xmlPath);
+		check = setparser(xmlPath);
 		
-		setparser(xmlPath);
 	}
 
-	public void setparser(String xmlPath) {
+	public boolean setparser(String xmlPath) {
 		try {
 			File setting = new File(xmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
@@ -76,9 +78,11 @@ public class BarChartParser {
 							+ seriesPaint);
 				}
 			}
+			return true;
 		} catch (Exception ex) {
-			System.out.println("Type error");
 			//ex.printStackTrace();
+			System.out.println("Type error");
+			return false;
 		}
 	}
 

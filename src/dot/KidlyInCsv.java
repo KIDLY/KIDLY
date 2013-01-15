@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartPanel;
@@ -122,31 +123,42 @@ public class KidlyInCsv extends JFrame {
 				String selectType = chartTypeChoice.getSelectedItem();
 		        System.out.println(selectType);
 		        
-		        if( selectType.equals("Bar Chart") )
-					new BarChartParser(xmlPath);
-				else if( selectType.equals("Line Chart") )
-					new LineChartParser(xmlPath);
-				else if( selectType.equals("Area Chart") )
-					new AreaChartParser(xmlPath);
-				else if( selectType.equals("Pie Chart") )
-					new PieChartParser(xmlPath);
+		       XMLparser.Parser mParser = null;
+				if( selectType.equals("Bar Chart") ){
+					mParser = new BarChartParser(xmlPath);
 			
-				//Generate Chart
-		        KidlyInitChartFactory factory = new KidlyInitChartFactory();
-		        JFreeChart chart = factory.createChart(selectType,dataSet);
+					}
+				else if( selectType.equals("Line Chart") )
+					mParser = new LineChartParser(xmlPath);
+				else if( selectType.equals("Area Chart") )
+					mParser = new AreaChartParser(xmlPath);
+				else if( selectType.equals("Pie Chart") )
+					mParser = new PieChartParser(xmlPath);
 		        
-		        				
-		        if(chartPanel != null){
-		        	inCsvPanel.remove(chartPanel);
+		        if(mParser.check == true){
+				//Generate Chart
+			        KidlyInitChartFactory factory = new KidlyInitChartFactory();
+			        JFreeChart chart = factory.createChart(selectType,dataSet);
+			        
+			        				
+			        if(chartPanel != null){
+			        	inCsvPanel.remove(chartPanel);
+			        }
+					chartPanel = new ChartPanel(chart);
+					chartPanel.setFillZoomRectangle(true);
+					chartPanel.setMouseWheelEnabled(true);
+					chartPanel.setPreferredSize(new Dimension(500, 270));
+	
+					chartPanel.setBounds(10, 220, 300, 300);
+					inCsvPanel.add(chartPanel);
+					inCsvPanel.updateUI();
 		        }
-				chartPanel = new ChartPanel(chart);
-				chartPanel.setFillZoomRectangle(true);
-				chartPanel.setMouseWheelEnabled(true);
-				chartPanel.setPreferredSize(new Dimension(500, 270));
-
-				chartPanel.setBounds(10, 220, 300, 300);
-				inCsvPanel.add(chartPanel);
-				inCsvPanel.updateUI();
+		        else{
+		        	JOptionPane.showMessageDialog(chartPanel,
+						    "Eggs are not supposed to be green.",
+						    "Inane error",
+						    JOptionPane.ERROR_MESSAGE);
+		        }
 
 			}
 		});

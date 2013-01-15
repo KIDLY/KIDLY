@@ -2,6 +2,7 @@ package XMLparser;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -21,13 +22,14 @@ public class Parser {
 	public String categorySize;
 	public String chartTitle;
 	public String seriesPaint;
+	public boolean check;
 	
 	public Parser(String xmlPath) {
 		
-		setparser(xmlPath);
+		check = setparser(xmlPath);
 	}
 
-	public void setparser(String xmlPath) {
+	public boolean setparser(String xmlPath) {
 		try {
 			File setting = new File(xmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
@@ -76,9 +78,11 @@ public class Parser {
 							+ seriesPaint);
 				}
 			}
+			return true;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			System.out.println("Type error");
+			return false;
 		}
 	}
 
