@@ -135,7 +135,7 @@ public class KidlyGUI extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				try {
 					if (IBManager.holdedBlock != null) {
-						IBManager.changeLayout((int) spinner.getValue());
+						IBManager.changeLayout((int)spinner.getValue());
 						spinner.setValue(IBManager.holdedBlock.level);
 					}
 				} catch (Exception e1) {
@@ -366,7 +366,8 @@ public class KidlyGUI extends JFrame {
 
 			buffer = new BufferedImage(330, 450, BufferedImage.TYPE_INT_RGB);
 			bg = buffer.createGraphics();
-			bg.setBackground(Color.WHITE);
+			bg.setPaint(Color.WHITE);
+            bg.fillRect(0, 0, 330, 450);
 			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
 			ImageBlock focusBlock = IBManager.getHoldedImageBlock();
 			for (int i = ibl.size() - 1; i >= 0; i--) {
@@ -512,7 +513,7 @@ public class KidlyGUI extends JFrame {
 		public void raiseLayout() {
 			int i = this.blockList.indexOf(this.holdedBlock);
 			this.holdedBlock.level = i - 1;
-			this.blockList.get(i - i).level = i;
+			this.blockList.get(i - 1).level = i;
 			Collections.swap(this.blockList, i, i - 1);
 			// ArrayList<String> arrayList = new ArrayList<String>();
 		}
@@ -524,7 +525,7 @@ public class KidlyGUI extends JFrame {
 		public void reduceLayout() {
 			int i = this.blockList.indexOf(this.holdedBlock);
 			this.holdedBlock.level = i + 1;
-			this.blockList.get(i + i).level = i;
+			this.blockList.get(i + 1).level = i;
 			Collections.swap(this.blockList, i, i + 1);
 		}
 
@@ -581,12 +582,30 @@ public class KidlyGUI extends JFrame {
 			return this.blockList.size();
 		}
 
+        /**
+         * remove indexed image block
+         */
+        public ImageBlock removeImageBlock(int index){
+            ImageBlock remove = this.blockList.remove(index);
+            this.rearrangeLevel();
+            return remove;
+        }
+
 		/**
 		 * use indexer to select a image block
 		 */
 		private void selectLayout(int index) {
 			this.holdedBlock = this.blockList.get(index);
 		}
+
+        /**
+         * rearrange level in block list
+         */
+        private void rearrangeLevel(){
+            for (int i = 0; i < this.blockList.size(); i++) {
+                this.blockList.get(i).level = i;
+            }
+        }
 
 	}
 
