@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -29,12 +28,14 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultFormatter;
 
 public class KidlyGUI extends JFrame {
 
@@ -42,7 +43,9 @@ public class KidlyGUI extends JFrame {
 	private BufferedImage buffer = null;
 	public Graphics2D bg;
 	public JSlider skewSlider, scaleSlider;
+	public JSpinner spinner;
 	public JLabel lbl_scaleNum, lbl_skewNum;
+	Boolean isBlockChanged = false;
 
 	/**
 	 * Launch the application.
@@ -118,7 +121,20 @@ public class KidlyGUI extends JFrame {
 		JMenuItem mntmAboutThis = new JMenuItem("About this");
 		mnAbout.add(mntmAboutThis);
 
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				try {
+					if (IBManager.holdedBlock != null) {
+						IBManager.changeLayout((int) spinner.getValue());
+						spinner.setValue(IBManager.holdedBlock.level);
+					}
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		spinner.setBounds(457, 87, 134, 32);
 		contentPane.add(spinner);
 
@@ -137,7 +153,7 @@ public class KidlyGUI extends JFrame {
 		scaleSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				try {
-					if (IBManager.holdedBlock != null) {
+					if (IBManager != null) {
 						IBManager.scaleImage(scaleSlider.getValue());
 						lbl_scaleNum.setText("" + IBManager.holdedBlock.scalePercentage);
 					}
@@ -289,7 +305,7 @@ public class KidlyGUI extends JFrame {
 				lbl_scaleNum.setText("" + IBManager.holdedBlock.scalePercentage);
 				skewSlider.setValue(IBManager.holdedBlock.degree);
 				lbl_skewNum.setText("" + IBManager.holdedBlock.degree);
-
+				spinner.setValue(IBManager.holdedBlock.level);
 			}
 
 			/*
@@ -320,15 +336,15 @@ public class KidlyGUI extends JFrame {
 		@Override
 		public void paintComponent(Graphics g) {
 
-			buffer = new BufferedImage(330, 450,BufferedImage.TYPE_INT_RGB);
+			buffer = new BufferedImage(330, 450, BufferedImage.TYPE_INT_RGB);
 			bg = buffer.createGraphics();
 			bg.setBackground(Color.WHITE);
 			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
 			ImageBlock focusBlock = IBManager.getHoldedImageBlock();
 			for (int i = ibl.size() - 1; i >= 0; i--) {
 				ImageBlock ib = ibl.get(i);
-                if (focusBlock == ib) {
-                    ib.paintOnGraphics2D(bg);
+				if (focusBlock == ib) {
+					ib.paintOnGraphics2D(bg);
 				}
 				ib.paintOnGraphics2D(bg);
 			}
@@ -363,10 +379,13 @@ public class KidlyGUI extends JFrame {
 
 		/**
 		 * add a image block to ImageBlockManager
+		 * 
+		 * raise the spinner upper bounds. @author Dotto
 		 */
 		public void addImageBlock(ImageBlock block) {
 			block.level = this.blockList.size();
 			this.blockList.add(block);
+			spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(this.blockList.size() - 1), new Integer(1)));
 		}
 
 		/**
@@ -376,7 +395,7 @@ public class KidlyGUI extends JFrame {
 		 */
 		public void skewImage(int degree) throws Exception {
 			if (this.holdedBlock != null) {
-                this.holdedBlock.degree = degree;
+				this.holdedBlock.degree = degree;
 			} else {
 				throw new Exception("None holded block");
 			}
@@ -408,7 +427,7 @@ public class KidlyGUI extends JFrame {
 		 * @throws Exception
 		 */
 		public void scaleImage(int scalePercentage) throws Exception {
-			if (holdedBlock!= null) { 
+			if (holdedBlock != null) {
 				this.holdedBlock.scalePercentage = scalePercentage;
 			}
 		}
@@ -443,6 +462,23 @@ public class KidlyGUI extends JFrame {
 		}
 
 		/**
+		 * Manage the Layout event.Raise or reduce its level according to
+		 * spinnerNum.
+		 * 
+		 * @param spinnerNum
+		 */
+		public void changeLayout(int spinnerNum) {
+			/* TODO */
+			if (spinnerNum < this.holdedBlock.level) {
+				raiseLayout();
+			}
+			if (spinnerNum > this.holdedBlock.level) {
+				reduceLayout();
+			}
+
+		}
+
+		/**
 		 * Raise layout level to higher (high Priority to print on canvas
 		 */
 		public void raiseLayout() {
@@ -450,7 +486,7 @@ public class KidlyGUI extends JFrame {
 			this.holdedBlock.level = i - 1;
 			this.blockList.get(i - i).level = i;
 			Collections.swap(this.blockList, i, i - 1);
-			ArrayList<String> arrayList = new ArrayList<String>();
+			// ArrayList<String> arrayList = new ArrayList<String>();
 		}
 
 		/**
@@ -553,16 +589,16 @@ public class KidlyGUI extends JFrame {
 			}
 			return false;
 		}
-        public void paintOnGraphics2D(Graphics2D bg){
-            AffineTransform at = new AffineTransform();
-            at.translate(this.x, this.y);
-            at.translate(this.width /2, this.height/2);
-            at.rotate(Math.PI*this.degree/180);
-            at.scale((float)this.scalePercentage/100, (float)this.scalePercentage/100);
-            at.translate(-this.width /2, -this.height/2);
-            bg.drawImage(this.image, at, null);
-        }
-			
-			
+
+		public void paintOnGraphics2D(Graphics2D bg) {
+			AffineTransform at = new AffineTransform();
+			at.translate(this.x, this.y);
+			at.translate(this.width / 2, this.height / 2);
+			at.rotate(Math.PI * this.degree / 180);
+			at.scale((float) this.scalePercentage / 100, (float) this.scalePercentage / 100);
+			at.translate(-this.width / 2, -this.height / 2);
+			bg.drawImage(this.image, at, null);
+		}
+
 	}
 }
