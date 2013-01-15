@@ -36,6 +36,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatter;
+import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import javax.swing.JToolBar;
+import javax.swing.ImageIcon;
 
 public class KidlyGUI extends JFrame {
 
@@ -135,17 +143,17 @@ public class KidlyGUI extends JFrame {
 				}
 			}
 		});
-		spinner.setBounds(457, 87, 134, 32);
+		spinner.setBounds(457, 129, 134, 32);
 		contentPane.add(spinner);
 
 		JLabel lblPriority = new JLabel("Priority :");
 		lblPriority.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblPriority.setBounds(374, 87, 63, 18);
+		lblPriority.setBounds(374, 129, 63, 18);
 		contentPane.add(lblPriority);
 
 		JLabel lblSize = new JLabel("Scale :");
 		lblSize.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSize.setBounds(374, 153, 46, 15);
+		lblSize.setBounds(374, 195, 46, 15);
 		contentPane.add(lblSize);
 
 		scaleSlider = new JSlider();
@@ -166,11 +174,11 @@ public class KidlyGUI extends JFrame {
 		scaleSlider.setMinimum(1);
 		scaleSlider.setMaximum(200);
 		scaleSlider.setBackground(Color.LIGHT_GRAY);
-		scaleSlider.setBounds(457, 174, 180, 21);
+		scaleSlider.setBounds(457, 216, 180, 21);
 		contentPane.add(scaleSlider);
 
 		JLabel label_1 = new JLabel("1%                    100%                  200%");
-		label_1.setBounds(457, 205, 191, 15);
+		label_1.setBounds(457, 247, 191, 15);
 		contentPane.add(label_1);
 
 		lbl_scaleNum = new JLabel("100");
@@ -178,12 +186,12 @@ public class KidlyGUI extends JFrame {
 		lbl_scaleNum.setFont(new Font("�s�ө���", Font.PLAIN, 13));
 		lbl_scaleNum.setBackground(Color.WHITE);
 		lbl_scaleNum.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_scaleNum.setBounds(457, 154, 113, 15);
+		lbl_scaleNum.setBounds(457, 196, 113, 15);
 		contentPane.add(lbl_scaleNum);
 
 		JLabel lblRotation = new JLabel("Rotation :");
 		lblRotation.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblRotation.setBounds(374, 254, 63, 15);
+		lblRotation.setBounds(374, 296, 63, 15);
 		contentPane.add(lblRotation);
 
 		skewSlider = new JSlider();
@@ -205,7 +213,7 @@ public class KidlyGUI extends JFrame {
 		});
 		skewSlider.setMaximum(180);
 		skewSlider.setBackground(Color.LIGHT_GRAY);
-		skewSlider.setBounds(457, 284, 180, 21);
+		skewSlider.setBounds(457, 326, 180, 21);
 		contentPane.add(skewSlider);
 
 		lbl_skewNum = new JLabel("100");
@@ -213,41 +221,61 @@ public class KidlyGUI extends JFrame {
 		lbl_skewNum.setForeground(Color.RED);
 		lbl_skewNum.setFont(new Font("�s�ө���", Font.PLAIN, 13));
 		lbl_skewNum.setBackground(Color.WHITE);
-		lbl_skewNum.setBounds(457, 254, 113, 15);
+		lbl_skewNum.setBounds(457, 296, 113, 15);
 		contentPane.add(lbl_skewNum);
 
 		JLabel label = new JLabel("-180\u00B0                    0\u00B0                    180\u00B0");
-		label.setBounds(460, 318, 177, 15);
+		label.setBounds(460, 360, 177, 15);
 		contentPane.add(label);
 
 		JPanel panel = new canvasPanel();
-		panel.setBounds(29, 87, 312, 439);
+		panel.setBounds(29, 107, 312, 439);
 		panel.setBackground(Color.WHITE);
 		contentPane.add(panel);
 
 		JLabel label_2 = new JLabel("%");
 		label_2.setForeground(Color.RED);
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_2.setBounds(547, 154, 46, 15);
+		label_2.setBounds(547, 196, 46, 15);
 		contentPane.add(label_2);
-
-		JSeparator separator = new JSeparator();
-		separator.setBounds(357, 129, 302, 97);
-		contentPane.add(separator);
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(357, 230, 302, 97);
-		contentPane.add(separator_1);
-
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(357, 356, 302, 97);
-		contentPane.add(separator_2);
 
 		JLabel label_4 = new JLabel("\u00B0");
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_4.setForeground(Color.RED);
-		label_4.setBounds(547, 254, 46, 15);
+		label_4.setBounds(547, 296, 46, 15);
 		contentPane.add(label_4);
+
+		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(0, 20, 684, 69);
+		contentPane.add(toolBar);
+
+		JButton btnAddText = new JButton("Add Kidly Chart");
+		toolBar.add(btnAddText);
+		btnAddText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
+
+		JButton btnAddNewText = new JButton("Add New Image");
+		toolBar.add(btnAddNewText);
+		btnAddNewText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_image.png")));
+
+		JButton btnAddText_1 = new JButton("Add Text");
+		btnAddText_1.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add-text.png")));
+		toolBar.add(btnAddText_1);
+
+		JSeparator separator = new JSeparator();
+		separator.setBounds(357, 171, 302, 97);
+		contentPane.add(separator);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(357, 272, 302, 97);
+		contentPane.add(separator_1);
+
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(357, 398, 302, 97);
+		contentPane.add(separator_2);
 	}
 
 	private ImageBlockManager IBManager;
@@ -600,5 +628,25 @@ public class KidlyGUI extends JFrame {
 			bg.drawImage(this.image, at, null);
 		}
 
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }
