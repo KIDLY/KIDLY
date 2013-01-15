@@ -9,6 +9,6 @@
 			  <y_AxisName>people</y_AxisName>
 			  <categorySize>10</categorySize>
 			  <chartTitle>Test chart</chartTitle>
-			  <seriesPaint>red</seriesPaint>
+			  <!--seriesPaint>red</seriesPaint-->
        </setting>
 </settings>

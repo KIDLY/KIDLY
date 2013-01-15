@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Parser {
+public class AreaChartParser {
 
 	public String materialSizeX;
 	public String materialSizeY;
@@ -22,7 +22,7 @@ public class Parser {
 	public String chartTitle;
 	public String seriesPaint;
 	
-	public Parser(String xmlPath) {
+	public AreaChartParser(String xmlPath) {
 		
 		setparser(xmlPath);
 	}
@@ -77,8 +77,9 @@ public class Parser {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			System.out.println("Type error");
+			//ex.printStackTrace();
+			
 		}
 	}
 

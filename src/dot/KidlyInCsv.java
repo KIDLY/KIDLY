@@ -19,7 +19,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.io.CSV;
 
-import XMLparser.Parser;
+import XMLparser.AreaChartParser;
+import XMLparser.BarChartParser;
+import XMLparser.LineChartParser;
+import XMLparser.PieChartParser;
 
 public class KidlyInCsv extends JFrame {
 
@@ -54,7 +57,7 @@ public class KidlyInCsv extends JFrame {
 		openCsvButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// Choose File
+				// Choose Files
 				openCsvButton.setVisible(true);
 				FileChooser chooser = new FileChooser("csv");
 				csvPath = chooser.getPath();
@@ -104,7 +107,7 @@ public class KidlyInCsv extends JFrame {
 				CategoryDataset dataSet = null;
 
 				try {
-					new Parser(xmlPath);
+					
 					reader = new FileReader(csvPath);
 
 					dataSet = (new CSV(';', '"')).readCategoryDataset(reader);
@@ -118,6 +121,15 @@ public class KidlyInCsv extends JFrame {
 
 				String selectType = chartTypeChoice.getSelectedItem();
 		        System.out.println(selectType);
+		        
+		        if( selectType.equals("Bar Chart") )
+					new BarChartParser(xmlPath);
+				else if( selectType.equals("Line Chart") )
+					new LineChartParser(xmlPath);
+				else if( selectType.equals("Area Chart") )
+					new AreaChartParser(xmlPath);
+				else if( selectType.equals("Pie Chart") )
+					new PieChartParser(xmlPath);
 			
 				//Generate Chart
 		        KidlyInitChartFactory factory = new KidlyInitChartFactory();
