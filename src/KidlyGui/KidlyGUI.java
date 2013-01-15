@@ -631,19 +631,23 @@ public class KidlyGUI extends JFrame {
 		}
 
 		public boolean isHit(int x, int y) {
-			if (x > this.x && x < this.x + this.width && y > this.y && y < this.y + this.height) {
+            int ox = this.x - (this.width - this.preWidth)/2;
+            int oy = this.y - (this.height - this.preHeight)/2;
+			if (x > ox && x < ox + this.width && y > oy && y < oy + this.height) {
 				return true;
 			}
 			return false;
 		}
 
 		public void paintOnGraphics2D(Graphics2D bg) {
+            this.width = (int)this.preWidth*this.scalePercentage/100;
+            this.height = (int)this.preHeight*this.scalePercentage/100;
 			AffineTransform at = new AffineTransform();
 			at.translate(this.x, this.y);
-			at.translate(this.width / 2, this.height / 2);
+			at.translate(this.preWidth / 2, this.preHeight / 2);
 			at.rotate(Math.PI * this.degree / 180);
 			at.scale((float) this.scalePercentage / 100, (float) this.scalePercentage / 100);
-			at.translate(-this.width / 2, -this.height / 2);
+			at.translate(-this.preWidth / 2, -this.preHeight / 2);
 			bg.drawImage(this.image, at, null);
 		}
 
