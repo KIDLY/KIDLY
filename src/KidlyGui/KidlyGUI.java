@@ -46,10 +46,10 @@ public class KidlyGUI extends JFrame {
 
 	private JPanel contentPane;
 	private BufferedImage buffer = null;
-	public Graphics2D bg;
-	public JSlider skewSlider, scaleSlider;
-	public JSpinner spinner;
-	public JLabel lbl_scaleNum, lbl_skewNum;
+	private Graphics2D bg;
+	private JSlider skewSlider, scaleSlider;
+	private JSpinner spinner;
+	private JLabel lbl_scaleNum, lbl_skewNum;
 	Boolean isBlockChanged = false;
 
 	/**
@@ -132,7 +132,7 @@ public class KidlyGUI extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				try {
 					if (IBManager.holdedBlock != null) {
-						IBManager.changeLayout((int)spinner.getValue());
+						IBManager.changeLayout((int) spinner.getValue());
 						spinner.setValue(IBManager.holdedBlock.level);
 					}
 				} catch (Exception e1) {
@@ -245,42 +245,42 @@ public class KidlyGUI extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setBounds(0, 20, 513, 69);
 		contentPane.add(toolBar);
-		
-				JButton btnAddText = new JButton("Add Kidly Chart");
-				toolBar.add(btnAddText);
-				btnAddText.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-					}
-				});
-				btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
-				
-						JButton btnAddNewText = new JButton("Add New Image");
-						toolBar.add(btnAddNewText);
-						btnAddNewText.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								try {
-									JFileChooser jFileOpen = new JFileChooser();
-									jFileOpen.setDialogTitle("Add New Image");
-									jFileOpen.setMultiSelectionEnabled(false);
-									jFileOpen.showOpenDialog(null);
-									File file = jFileOpen.getSelectedFile();
-									System.out.println("Open:" + file.getAbsolutePath().toString());
-									/* TODO got the file path */
-								} catch (Exception ef) {
-									ef.getStackTrace();
-								}
-							}
-						});
-						btnAddNewText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_image.png")));
-						
-								JButton btnAddText_1 = new JButton("Add Text");
-								toolBar.add(btnAddText_1);
-								btnAddText_1.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										
-									}
-								});
-								btnAddText_1.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add-text.png")));
+
+		JButton btnAddText = new JButton("Add Kidly Chart");
+		toolBar.add(btnAddText);
+		btnAddText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
+
+		JButton btnAddNewText = new JButton("Add New Image");
+		toolBar.add(btnAddNewText);
+		btnAddNewText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JFileChooser jFileOpen = new JFileChooser();
+					jFileOpen.setDialogTitle("Add New Image");
+					jFileOpen.setMultiSelectionEnabled(false);
+					jFileOpen.showOpenDialog(null);
+					File file = jFileOpen.getSelectedFile();
+					System.out.println("Open:" + file.getAbsolutePath().toString());
+					/* TODO got the file path */
+				} catch (Exception ef) {
+					ef.getStackTrace();
+				}
+			}
+		});
+		btnAddNewText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_image.png")));
+
+		JButton btnAddText_1 = new JButton("Add Text");
+		toolBar.add(btnAddText_1);
+		btnAddText_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		btnAddText_1.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add-text.png")));
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(357, 171, 302, 97);
@@ -293,11 +293,11 @@ public class KidlyGUI extends JFrame {
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(357, 398, 302, 97);
 		contentPane.add(separator_2);
-		
+
 		JToolBar toolBar_1 = new JToolBar();
 		toolBar_1.setBounds(513, 20, 171, 69);
 		contentPane.add(toolBar_1);
-		
+
 		JButton btnOutput = new JButton("Save as ...");
 		btnOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -396,7 +396,7 @@ public class KidlyGUI extends JFrame {
 			buffer = new BufferedImage(330, 450, BufferedImage.TYPE_INT_RGB);
 			bg = buffer.createGraphics();
 			bg.setPaint(Color.WHITE);
-            bg.fillRect(0, 0, 330, 450);
+			bg.fillRect(0, 0, 330, 450);
 			ArrayList<ImageBlock> ibl = IBManager.getBlockList();
 			ImageBlock focusBlock = IBManager.getHoldedImageBlock();
 			for (int i = ibl.size() - 1; i >= 0; i--) {
@@ -611,14 +611,14 @@ public class KidlyGUI extends JFrame {
 			return this.blockList.size();
 		}
 
-        /**
-         * remove indexed image block
-         */
-        public ImageBlock removeImageBlock(int index){
-            ImageBlock remove = this.blockList.remove(index);
-            this.rearrangeLevel();
-            return remove;
-        }
+		/**
+		 * remove indexed image block
+		 */
+		public ImageBlock removeImageBlock(int index) {
+			ImageBlock remove = this.blockList.remove(index);
+			this.rearrangeLevel();
+			return remove;
+		}
 
 		/**
 		 * use indexer to select a image block
@@ -627,14 +627,14 @@ public class KidlyGUI extends JFrame {
 			this.holdedBlock = this.blockList.get(index);
 		}
 
-        /**
-         * rearrange level in block list
-         */
-        private void rearrangeLevel(){
-            for (int i = 0; i < this.blockList.size(); i++) {
-                this.blockList.get(i).level = i;
-            }
-        }
+		/**
+		 * rearrange level in block list
+		 */
+		private void rearrangeLevel() {
+			for (int i = 0; i < this.blockList.size(); i++) {
+				this.blockList.get(i).level = i;
+			}
+		}
 
 	}
 
@@ -660,8 +660,8 @@ public class KidlyGUI extends JFrame {
 		}
 
 		public boolean isHit(int x, int y) {
-            int ox = this.x - (this.width - this.preWidth)/2;
-            int oy = this.y - (this.height - this.preHeight)/2;
+			int ox = this.x - (this.width - this.preWidth) / 2;
+			int oy = this.y - (this.height - this.preHeight) / 2;
 			if (x > ox && x < ox + this.width && y > oy && y < oy + this.height) {
 				return true;
 			}
@@ -669,8 +669,8 @@ public class KidlyGUI extends JFrame {
 		}
 
 		public void paintOnGraphics2D(Graphics2D bg) {
-            this.width = (int)this.preWidth*this.scalePercentage/100;
-            this.height = (int)this.preHeight*this.scalePercentage/100;
+			this.width = (int) this.preWidth * this.scalePercentage / 100;
+			this.height = (int) this.preHeight * this.scalePercentage / 100;
 			AffineTransform at = new AffineTransform();
 			at.translate(this.x, this.y);
 			at.translate(this.preWidth / 2, this.preHeight / 2);
