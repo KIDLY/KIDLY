@@ -99,11 +99,11 @@ public class Parser {
 					
 					
 					
-					x_AxisName = getValue("x_AxisName", element);
-					y_AxisName = getValue("y_AxisName", element);
-					categorySize = getValue("categorySize", element);
+//					x_AxisName = getValue("x_AxisName", element);
+//					y_AxisName = getValue("y_AxisName", element);
+//					categorySize = getValue("categorySize", element);
 					
-					seriesPaint = getValue("seriesPaint", element);
+//					seriesPaint = getValue("seriesPaint", element);
 					
 					System.out.println("materialSizeX: "
 							+ materialSizeX);
