@@ -16,7 +16,4 @@ class TextStruct {
 		this.posX = null;
 		this.posY =null;
 	}
-	void iv(){
-		
-	}
 }

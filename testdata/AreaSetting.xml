@@ -41,10 +41,6 @@
 		</Serieses>
 
     </CommonSetting>
-    <!-- I don't know what's this -->
-    <!--seriesPaint>red</seriesPaint-->
-		<materialSizeX>50</materialSizeX>
-		<materialSizeY>50</materialSizeY>
     <PrivateSetting>
         <!-- Axis Pie Chart don't get this -->
         <!-- Axis -->
