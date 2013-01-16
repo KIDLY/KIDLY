@@ -44,6 +44,8 @@ public class Parser {
 
 			NodeList nodes = doc.getElementsByTagName("CommonSetting");
 			pNodes = doc.getElementsByTagName("PrivateSetting");//分離出單獨部分
+
+			
 			
 			for (int i = 0; i < nodes.getLength(); i++) {
 				Node node = nodes.item(0);
@@ -65,6 +67,7 @@ public class Parser {
 					titleFont = getValue("titleFont", element);
 					titleSize = getValue("titleSize", element);
 					
+					
 					//Text
 //					NodeList textNode = element.getElementsByTagName("Texts");
 //					texts = new TextStruct[textNode.getLength()];
@@ -80,6 +83,7 @@ public class Parser {
 //						texts[ia].posY = getValue("PosY",te);
 //					}
 					
+					
 					//Series
 					NodeList seNode = element.getElementsByTagName("Serieses");
 					serieses = new SeriesStruct[seNode.getLength()];
@@ -89,12 +93,11 @@ public class Parser {
 						serieses[ia].color = getValue("Color",se);
 						serieses[ia].id = getValue("ID",se);
 					}
-					
 				}
 			}
 			return true;
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			ex.printStackTrace();
 			System.out.println("Type error");
 			return false;
 		}
@@ -113,7 +116,6 @@ public class Parser {
 			return "";
 		}
 			
-		
 	}
 
 }
