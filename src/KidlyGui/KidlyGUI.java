@@ -80,7 +80,6 @@ public class KidlyGUI extends JFrame {
 	 */
 	public KidlyGUI() {
 		initGui();
-
 	}
 
 	public void initGui() {
@@ -225,10 +224,11 @@ public class KidlyGUI extends JFrame {
 		label.setBounds(460, 360, 177, 15);
 		contentPane.add(label);
 
-		JPanel panel = new canvasPanel();
+		canvasPanel panel = new canvasPanel();
 		panel.setBounds(29, 107, 312, 439);
 		panel.setBackground(Color.WHITE);
-		contentPane.add(panel);
+		contentPane.add((canvasPanel)panel);
+        this.canvas = panel;
 
 		JLabel label_2 = new JLabel("%");
 		label_2.setForeground(Color.RED);
@@ -301,13 +301,27 @@ public class KidlyGUI extends JFrame {
 		JButton btnOutput = new JButton("Save as ...");
 		btnOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                System.out.println("hello");
+                saveImage();
 			}
 		});
 		btnOutput.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/save_file.png")));
 		toolBar_1.add(btnOutput);
 	}
+    public void saveImage(){
+        try
+        {
+            BufferedImage image = this.canvas.getCanvasImage();
+            ImageIO.write(image,"jpeg", new File("/home/lucas/a.jpg"));
+        }
+        catch(Exception exception)
+        {
+            //code
+        }
+    }
 
 	private ImageBlockManager IBManager;
+    private canvasPanel canvas;
 
 	public class canvasPanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -424,6 +438,14 @@ public class KidlyGUI extends JFrame {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 		}
+
+        public BufferedImage getCanvasImage(){
+            if (buffer != null) {
+                return buffer;
+            }else{
+            	return null;
+            }
+        }
 	}
 
 	public class ImageBlockManager {
