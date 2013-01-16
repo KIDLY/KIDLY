@@ -136,9 +136,12 @@ public class KidlyInCsv extends JFrame {
 					mParser = new PieChartParser(xmlPath);
 		        
 		        if(mParser.check == true){
-				//Generate Chart
+		        	//Generate Chart
 			        KidlyInitChartFactory factory = new KidlyInitChartFactory();
-			        JFreeChart chart = factory.createChart(selectType,dataSet);
+			        JFreeChart chart = factory.createChart(selectType,dataSet,mParser);
+			        
+			        
+			        
 			        
 			        				
 			        if(chartPanel != null){

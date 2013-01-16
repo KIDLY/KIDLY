@@ -1,5 +1,7 @@
 package dot;
 
+import java.awt.Color;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -24,7 +26,7 @@ public class KidlyInitChartFactory {
 	
 	}
 	
-	public JFreeChart createChart(String chartType,CategoryDataset dataSet){
+	public JFreeChart createChart(String chartType,CategoryDataset dataSet,XMLparser.Parser mParser){
 		
 		JFreeChart chart = null;
 		
@@ -36,7 +38,26 @@ public class KidlyInitChartFactory {
 			chart = ChartFactory.createAreaChart(title,categoryAxisLabel,valueAxisLabel,dataSet,orientation,legend,tooltips,urls);
 		else if( chartType.equals("Pie Chart") ){
 			CategoryToPieDataset categoryToPieDataset = new CategoryToPieDataset(dataSet, TableOrder.BY_ROW , 1);
-			chart = ChartFactory.createPieChart(title,categoryToPieDataset,legend,tooltips,urls);
+			chart = ChartFactory.createPieChart(mParser.chartTitle,categoryToPieDataset,legend,tooltips,urls);
+		
+			
+			//Set Bg
+			if(!mParser.chartBgColor.equals("")){
+ 
+				int r = Integer.valueOf(mParser.chartBgColor.substring(0, 2));
+				int g = Integer.valueOf(mParser.chartBgColor.substring(2, 4));
+				int b = Integer.valueOf(mParser.chartBgColor.substring(4, 6));
+				
+				Color mColor = new Color(r,g,b);
+				chart.setBackgroundPaint(mColor);
+				
+			}
+			//JFreeChart.setBackgroundImage
+			//plot.setBackgroundAlpha
+			
+			//Set Title
+			
+		
 		}
 		else
 			return null;
