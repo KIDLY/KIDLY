@@ -1,5 +1,6 @@
 package dot;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,12 +11,20 @@ import javax.imageio.ImageIO;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.CategoryToPieDataset;
 import org.jfree.util.TableOrder;
+
+import XMLparser.AreaChartParser;
+import XMLparser.BarChartParser;
+import XMLparser.LineChartParser;
 
 public class KidlyInitChartFactory {
 	
@@ -26,7 +35,7 @@ public class KidlyInitChartFactory {
     private boolean legend = true;
     private boolean tooltips = true;
     private boolean urls = false;
-    
+    private ColorFactory colorFactory = null;
 		
 	public KidlyInitChartFactory() {
 		
@@ -40,15 +49,21 @@ public class KidlyInitChartFactory {
 	public JFreeChart createChart(String chartType,CategoryDataset dataSet,XMLparser.Parser mParser) {
 		
 		JFreeChart chart = null;
-		ColorFactory colorFactory = new ColorFactory();
+		colorFactory = new ColorFactory();
 		
 		
-		if( chartType.equals("Bar Chart") )
-			chart = ChartFactory.createBarChart(title,categoryAxisLabel,valueAxisLabel,dataSet,orientation,legend,tooltips,urls);
-		else if( chartType.equals("Line Chart") )
-			chart = ChartFactory.createLineChart(title,categoryAxisLabel,valueAxisLabel,dataSet,orientation,legend,tooltips,urls);
-		else if( chartType.equals("Area Chart") )
-			chart = ChartFactory.createAreaChart(title,categoryAxisLabel,valueAxisLabel,dataSet,orientation,legend,tooltips,urls);
+		if( chartType.equals("Bar Chart") ){
+			chart = ChartFactory.createBarChart(title,mParser.xAxisName,mParser.yAxisName,dataSet,orientation,legend,tooltips,urls);
+			setBarChart(chart,(BarChartParser) mParser);
+		}
+		else if( chartType.equals("Line Chart") ){
+			chart = ChartFactory.createLineChart(title,mParser.xAxisName,mParser.yAxisName,dataSet,orientation,legend,tooltips,urls);
+			setLineChart(chart,(LineChartParser) mParser);
+		}
+		else if( chartType.equals("Area Chart") ){
+			chart = ChartFactory.createAreaChart(title,mParser.xAxisName,mParser.yAxisName,dataSet,orientation,legend,tooltips,urls);
+			setAreaChart(chart,(AreaChartParser) mParser);
+		}
 		else if( chartType.equals("Pie Chart") ){
 			CategoryToPieDataset categoryToPieDataset = new CategoryToPieDataset(dataSet, TableOrder.BY_ROW , 1);
 			chart = ChartFactory.createPieChart(title,categoryToPieDataset,legend,tooltips,urls);
@@ -168,7 +183,121 @@ public class KidlyInitChartFactory {
 		return chart;
 		
 	}
+	void setBarChart(JFreeChart chart,BarChartParser mParser){
+		CategoryPlot plot = chart.getCategoryPlot();
+		CategoryAxis domainAxis = plot.getDomainAxis();
+		NumberAxis rangeAxis = (NumberAxis)plot.getRangeAxis();
+		
+		if(mParser.yUpperBound!="")rangeAxis.setUpperBound(Float.valueOf(mParser.yUpperBound));
+		if(mParser.yLowerBound!="")rangeAxis.setLowerBound(Float.valueOf(mParser.yUpperBound));
+		//deal with paint
+		if(mParser.xAxisLinePaint!="")domainAxis.setAxisLinePaint(colorFactory.getColor(mParser.xAxisLinePaint));
+		if(mParser.yAxisLinePaint!="")rangeAxis.setAxisLinePaint(colorFactory.getColor(mParser.yAxisLinePaint));
+		
+		if(mParser.xAxisLineStroke!="")domainAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.xAxisLineStroke)));
+		if(mParser.yAxisLineStroke!="")rangeAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.yAxisLineStroke)));
+		if(mParser.xLowerMargin!="")domainAxis.setLowerMargin(Float.valueOf(mParser.xLowerMargin));
+		if(mParser.yLowerMargin!="")rangeAxis.setLowerMargin(Float.valueOf(mParser.yLowerMargin));
+		if(mParser.xUpperMargin!="")domainAxis.setUpperMargin(Float.valueOf(mParser.xUpperMargin));
+		if(mParser.yUpperMargin!="")rangeAxis.setUpperMargin(Float.valueOf(mParser.yUpperMargin));
+		if(mParser.xLabelAngle!=""){
+			int angle = Integer.valueOf(mParser.xLabelAngle);
+			switch(angle){
+			case -90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_90);
+				break;
+			case -45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
+				break;
+			case 45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+				break;
+			case 90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
+	void setLineChart(JFreeChart chart,LineChartParser mParser){
+		CategoryPlot plot = chart.getCategoryPlot();
+		CategoryAxis domainAxis = plot.getDomainAxis();
+		NumberAxis rangeAxis = (NumberAxis)plot.getRangeAxis();
+		
+		if(mParser.yUpperBound!="")rangeAxis.setUpperBound(Float.valueOf(mParser.yUpperBound));
+		if(mParser.yLowerBound!="")rangeAxis.setLowerBound(Float.valueOf(mParser.yUpperBound));
+		//deal with paint
+		if(mParser.xAxisLinePaint!="")domainAxis.setAxisLinePaint(colorFactory.getColor(mParser.xAxisLinePaint));
+		if(mParser.yAxisLinePaint!="")rangeAxis.setAxisLinePaint(colorFactory.getColor(mParser.yAxisLinePaint));
+		
+		if(mParser.xAxisLineStroke!="")domainAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.xAxisLineStroke)));
+		if(mParser.yAxisLineStroke!="")rangeAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.yAxisLineStroke)));
+		if(mParser.xLowerMargin!="")domainAxis.setLowerMargin(Float.valueOf(mParser.xLowerMargin));
+		if(mParser.yLowerMargin!="")rangeAxis.setLowerMargin(Float.valueOf(mParser.yLowerMargin));
+		if(mParser.xUpperMargin!="")domainAxis.setUpperMargin(Float.valueOf(mParser.xUpperMargin));
+		if(mParser.yUpperMargin!="")rangeAxis.setUpperMargin(Float.valueOf(mParser.yUpperMargin));
+		if(mParser.xLabelAngle!=""){
+			int angle = Integer.valueOf(mParser.xLabelAngle);
+			switch(angle){
+			case -90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_90);
+				break;
+			case -45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
+				break;
+			case 45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+				break;
+			case 90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
 	
+	void setAreaChart(JFreeChart chart,AreaChartParser mParser){
+		CategoryPlot plot = chart.getCategoryPlot();
+		CategoryAxis domainAxis = plot.getDomainAxis();
+		NumberAxis rangeAxis = (NumberAxis)plot.getRangeAxis();
+		
+		if(mParser.yUpperBound!="")rangeAxis.setUpperBound(Float.valueOf(mParser.yUpperBound));
+		if(mParser.yLowerBound!="")rangeAxis.setLowerBound(Float.valueOf(mParser.yUpperBound));
+		//deal with paint
+		if(mParser.xAxisLinePaint!="")domainAxis.setAxisLinePaint(colorFactory.getColor(mParser.xAxisLinePaint));
+		if(mParser.yAxisLinePaint!="")rangeAxis.setAxisLinePaint(colorFactory.getColor(mParser.yAxisLinePaint));
+		
+		if(mParser.xAxisLineStroke!="")domainAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.xAxisLineStroke)));
+		if(mParser.yAxisLineStroke!="")rangeAxis.setAxisLineStroke(new BasicStroke(Integer.valueOf(mParser.yAxisLineStroke)));
+		if(mParser.xLowerMargin!="")domainAxis.setLowerMargin(Float.valueOf(mParser.xLowerMargin));
+		if(mParser.yLowerMargin!="")rangeAxis.setLowerMargin(Float.valueOf(mParser.yLowerMargin));
+		if(mParser.xUpperMargin!="")domainAxis.setUpperMargin(Float.valueOf(mParser.xUpperMargin));
+		if(mParser.yUpperMargin!="")rangeAxis.setUpperMargin(Float.valueOf(mParser.yUpperMargin));
+		if(mParser.xLabelAngle!=""){
+			int angle = Integer.valueOf(mParser.xLabelAngle);
+			switch(angle){
+			case -90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_90);
+				break;
+			case -45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
+				break;
+			case 45:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+				break;
+			case 90:
+				domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
 	
 }
 	

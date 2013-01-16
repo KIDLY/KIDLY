@@ -16,8 +16,7 @@ public class Parser {
 	public String materialSizeY;
 	public String dataBgImg,dataBgColor,dataBgAlpha;
 	public String chartBgImg,chartBgColor,chartBgAlpha;
-	public String x_AxisName;
-	public String y_AxisName;
+	public String xAxisName,yAxisName;
 	public String categorySize;
 	public String chartTitle,titleFont,titleColor;
 	public String titleSize,titleX,titleY;
@@ -26,6 +25,7 @@ public class Parser {
 	public TextStruct[] texts = null;
 	public SeriesStruct[] serieses = null;
 	public NodeList pNodes;
+	
 	
 	public Parser(String xmlPath) {
 		
@@ -69,8 +69,6 @@ public class Parser {
 					titleColor = getValue("titleColor", element);
 					titleFont = getValue("titleFont", element);
 					titleSize = getValue("titleSize", element);
-					titleX = getValue("titleX", element);
-					titleY = getValue("titleY", element);
 					
 					//Text
 					NodeList textNode = element.getElementsByTagName("Texts");
@@ -86,6 +84,7 @@ public class Parser {
 						texts[ia].posX = getValue("PosX",te);
 						texts[ia].posY = getValue("PosY",te);
 					}
+					
 					//Series
 					NodeList seNode = element.getElementsByTagName("Serieses");
 					serieses = new SeriesStruct[seNode.getLength()];
@@ -93,8 +92,6 @@ public class Parser {
 						Element se = (Element)seNode.item(ia);
 						serieses[ia] = new SeriesStruct();
 						serieses[ia].color = getValue("Color",se);
-						serieses[ia].font = getValue("Font",se);
-						serieses[ia].size = getValue("Size",se);
 						serieses[ia].id = getValue("ID",se);
 					}
 					
@@ -114,10 +111,6 @@ public class Parser {
 							+ dataBgImg);
 					System.out.println("chartBgName: "
 							+ chartBgImg);
-					System.out.println("x_AxisName: "
-							+ x_AxisName);
-					System.out.println("y_AxisName: "
-							+ y_AxisName);
 					System.out.println("categorySize: "
 							+ categorySize);
 					System.out.println("chartTitle: "

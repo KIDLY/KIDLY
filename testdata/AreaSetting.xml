@@ -14,8 +14,7 @@
 		<titleFont></titleFont>
 		<titleSize></titleSize>
 		<titleColor></titleColor>
-		<titleX></titleX>
-		<titleY></titleY>
+
 		
 		<!-- Text -->
 		<Texts>
@@ -29,14 +28,11 @@
 		    </Text>
 		    <!-- Lots of Text -->
 		</Texts>
-
 		<!-- Series -->
 		<Serieses>
 		    <Series>
-		        <ID>1</ID>
-		        <Font></Font>
-		        <Size></Size>
-		        <Color>#FFFFFF</Color>
+		        <ID></ID>
+		        <Color></Color>
 		    </Series>
 		    <!-- Lots of Series ..... -->
 		</Serieses>
@@ -47,9 +43,6 @@
         <!-- Axis -->
 		<XAxisName>time</XAxisName>
 		<YAxisName>people</YAxisName>
-		<categorySize>10</categorySize>
-		<XAxisRange></XAxisRange>
-		<YAxisRange></YAxisRange>
 		<YUpperBound></YUpperBound>
 		<YLowerBound></YLowerBound>
 		<XAxisLinePaint></XAxisLinePaint>
@@ -61,12 +54,7 @@
 		<YLowerMargin></YLowerMargin>
 		<YUpperMargin></YUpperMargin>
 		<XLabelAngle></XLabelAngle>
-		<YLabelAngle></YLabelAngle>
-		<OutlineStroke>23</OutlineStroke>
-		
-		
-		
-		
+
 		
     </PrivateSetting>
 </settings>

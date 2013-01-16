@@ -14,7 +14,6 @@ import org.w3c.dom.NodeList;
 public class AreaChartParser extends Parser{
 
 	boolean checkPrivate;
-	public String xAxisName,yAxisName;
 	public String xAxisRange,yAxisRange;
 	public String yUpperBound,yLowerBound;
 	public String xAxisLinePaint,yAxisLinePaint,xAxisLineStroke,yAxisLineStroke;
@@ -37,8 +36,6 @@ public class AreaChartParser extends Parser{
 			Element element = (Element) node;
 			xAxisName = getValue("XAxisName",element);
 			yAxisName = getValue("YAxisName",element);
-			xAxisRange = getValue("XAxisRange",element);
-			yAxisRange = getValue("YAxisRange",element);
 			yUpperBound =  getValue("YUpperBound",element);
 			yLowerBound = getValue("YLowerBound",element);
 			xAxisLinePaint = getValue("XAxisLinePaint",element);
@@ -50,8 +47,7 @@ public class AreaChartParser extends Parser{
 			yLowerMargin = getValue("YLowerMargin",element);
 			yUpperMargin = getValue("YUpperMargin",element);
 			xLabelAngle = getValue("XLabelAngle",element);
-			yLabelAngle = getValue("YLabelAngle",element);
-			outlineStroke = getValue("OutlineStroke",element);
+
 			
 			System.out.println("finishPrivate"+outlineStroke);
 		}
