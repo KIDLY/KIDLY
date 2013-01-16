@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-       <setting>
-              <materialSizeX>50</materialSizeX>
-              <materialSizeY>50</materialSizeY>
-              <dataBgName>test.jpg</dataBgName>
-			  <chartBgName>test.jpg</chartBgName> 
-			  <x_AxisName>time</x_AxisName>
-			  <y_AxisName>people</y_AxisName>
-			  <categorySize>10</categorySize>
-			  <chartTitle>Test chart</chartTitle>
-			  <!--seriesPaint>red</seriesPaint-->
-       </setting>
+    <CommonSetting>
+        <!-- BackGround -->
+        <dataBgName>test.jpg</dataBgName>
+        <dataBgAlpha></dataBgAlpha>
+		<chartBgName></chartBgName>
+		<chartBgAlpha></chartBgAlpha>
+		
+		<!-- Title -->
+		<chartTitle>Test chart</chartTitle>
+		<titleFont></titleFont>
+		<titleSize></titleSize>
+		<titleColor></titleColor>
+		<titleX></titleX>
+		<titleY></titleY>
+		
+		<!-- Text -->
+		<Texts>
+		    <Text>
+		        <Text></Text>
+		        <Font></Font>
+		        <Size></Size>
+		        <Color></Color>
+		    </Text>
+		    <!-- Lots of Text -->
+		</Texts>
+		<!-- Series -->
+		<Serieses>
+		    <Series>
+		        <ID></ID>
+		        <Font></Font>
+		        <Size></Size>
+		        <Color></Color>
+		    </Series>
+		    <!-- Lots of Series ..... -->
+		</Serieses>
+		
+		<!-- I don't know what's this -->
+		<materialSizeX>50</materialSizeX>
+		<materialSizeY>50</materialSizeY>
+		
+		
+		
+		<!--seriesPaint>red</seriesPaint-->
+    </CommonSetting>
+    <PrivateSetting>
+        <!-- Axis Pie Chart don't get this -->
+		<x_AxisName>time</x_AxisName>
+		<y_AxisName>people</y_AxisName>
+		<categorySize>10</categorySize>
+		<axisRange></axisRange>
+		
+		
+    </PrivateSetting>
 </settings>

@@ -37,8 +37,8 @@ public class KidlyInCsv extends JFrame {
 	private JButton genChartButton ;
 	private JLabel inPathLabel1 ;
 	private JLabel inPathLabel2 ;
-	private String csvPath ;
-	private String xmlPath;
+	private String csvPath = "test.csv";
+	private String xmlPath = "Setting.xml";
 	private Choice chartTypeChoice ;
 	private ChartPanel chartPanel ;
 
