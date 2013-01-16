@@ -2,7 +2,7 @@
 <settings>
     <CommonSetting>
         <!-- BackGround -->
-        <dataBgImg>test.jpg</dataBgImg>
+        <dataBgImg>img\test.jpg</dataBgImg>
         <dataBgColor>#111111</dataBgColor>
         <dataBgAlpha></dataBgAlpha>
 		<chartBgImg></chartBgImg>

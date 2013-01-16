@@ -141,9 +141,6 @@ public class KidlyInCsv extends JFrame {
 			        KidlyInitChartFactory factory = new KidlyInitChartFactory();
 			        JFreeChart chart = factory.createChart(selectType,dataSet,mParser);
 			        
-			       
-			        
-			        
 			        				
 			        if(chartPanel != null){
 			        	inCsvPanel.remove(chartPanel);

@@ -138,7 +138,7 @@ public class KidlyInitChartFactory {
 
 	
 		//Set Text
-		for (int i=0;i<Array.getLength(mParser.texts);i++){
+		//for (int i=0;i<Array.getLength(mParser.texts);i++){
 		    
 //		    mParser.texts[i].text
 //			mParser.texts[i].size
@@ -147,7 +147,7 @@ public class KidlyInitChartFactory {
 //			mParser.texts[i].color
 //			mParser.texts[i].posX
 //			mParser.texts[i].posY
-		}
+		//}
 
 
 		//Set Series - Pie
