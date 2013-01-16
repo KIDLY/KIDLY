@@ -14,9 +14,8 @@ public class Parser {
 
 	public String materialSizeX;
 	public String materialSizeY;
-	public String dataBgName;
-	public String dataBgAlpha,chartBgAlpha;
-	public String chartBgName;
+	public String dataBgImg,dataBgColor,dataBgAlpha;
+	public String chartBgImg,chartBgColor,chartBgAlpha;
 	public String x_AxisName;
 	public String y_AxisName;
 	public String categorySize;
@@ -59,9 +58,10 @@ public class Parser {
 					materialSizeY = getValue("materialSizeY", element);
 					
 					//BackGround
-					dataBgName = getValue("dataBgName", element);
-					chartBgName = getValue("chartBgName", element);
-					
+					dataBgImg = getValue("dataBgImg", element);
+					chartBgImg = getValue("chartBgImg", element);
+					dataBgColor = getValue("dataBgColor",element);
+					chartBgColor = getValue("chartBgColor",element);
 					dataBgAlpha = getValue("dataBgAlpha", element);
 					chartBgAlpha = getValue("chartBgAlpha", element);
 					
@@ -84,6 +84,8 @@ public class Parser {
 						texts[ia].font = getValue("Font",te);
 						texts[ia].size = getValue("Size",te);
 						texts[ia].text = getValue("Text",te);
+						texts[ia].posX = getValue("PosX",te);
+						texts[ia].posY = getValue("PosY",te);
 					}
 					
 					//Series
@@ -111,9 +113,9 @@ public class Parser {
 					System.out.println("materialSizeY: "
 							+ materialSizeY);
 					System.out.println("dataBgName: "
-							+ dataBgName);
+							+ dataBgImg);
 					System.out.println("chartBgName: "
-							+ chartBgName);
+							+ chartBgImg);
 					System.out.println("x_AxisName: "
 							+ x_AxisName);
 					System.out.println("y_AxisName: "

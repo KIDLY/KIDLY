@@ -29,22 +29,9 @@
 		    </Text>
 		    <!-- Lots of Text -->
 		</Texts>
-		
 		<!-- Series -->
 		<Serieses>
 		    <Series>
-		        <ID></ID>
-		        <Font></Font>
-		        <Size></Size>
-		        <Color></Color>
-		    </Series>
-			<Series>
-		        <ID></ID>
-		        <Font></Font>
-		        <Size></Size>
-		        <Color></Color>
-		    </Series>
-			<Series>
 		        <ID></ID>
 		        <Font></Font>
 		        <Size></Size>
