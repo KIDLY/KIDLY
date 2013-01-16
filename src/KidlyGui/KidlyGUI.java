@@ -1,12 +1,14 @@
 package KidlyGui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,16 +20,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFormattedTextField;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -35,15 +41,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.DefaultFormatter;
-import javax.swing.JEditorPane;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import javax.swing.JToolBar;
-import javax.swing.ImageIcon;
 
 public class KidlyGUI extends JFrame {
 
@@ -246,24 +243,44 @@ public class KidlyGUI extends JFrame {
 		contentPane.add(label_4);
 
 		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(0, 20, 684, 69);
+		toolBar.setBounds(0, 20, 513, 69);
 		contentPane.add(toolBar);
-
-		JButton btnAddText = new JButton("Add Kidly Chart");
-		toolBar.add(btnAddText);
-		btnAddText.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
-
-		JButton btnAddNewText = new JButton("Add New Image");
-		toolBar.add(btnAddNewText);
-		btnAddNewText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_image.png")));
-
-		JButton btnAddText_1 = new JButton("Add Text");
-		btnAddText_1.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add-text.png")));
-		toolBar.add(btnAddText_1);
+		
+				JButton btnAddText = new JButton("Add Kidly Chart");
+				toolBar.add(btnAddText);
+				btnAddText.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					}
+				});
+				btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
+				
+						JButton btnAddNewText = new JButton("Add New Image");
+						toolBar.add(btnAddNewText);
+						btnAddNewText.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								try {
+									JFileChooser jFileOpen = new JFileChooser();
+									jFileOpen.setDialogTitle("Add New Image");
+									jFileOpen.setMultiSelectionEnabled(false);
+									jFileOpen.showOpenDialog(null);
+									File file = jFileOpen.getSelectedFile();
+									System.out.println("Open:" + file.getAbsolutePath().toString());
+									/* TODO got the file path */
+								} catch (Exception ef) {
+									ef.getStackTrace();
+								}
+							}
+						});
+						btnAddNewText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_image.png")));
+						
+								JButton btnAddText_1 = new JButton("Add Text");
+								toolBar.add(btnAddText_1);
+								btnAddText_1.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										
+									}
+								});
+								btnAddText_1.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add-text.png")));
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(357, 171, 302, 97);
@@ -276,6 +293,18 @@ public class KidlyGUI extends JFrame {
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(357, 398, 302, 97);
 		contentPane.add(separator_2);
+		
+		JToolBar toolBar_1 = new JToolBar();
+		toolBar_1.setBounds(513, 20, 171, 69);
+		contentPane.add(toolBar_1);
+		
+		JButton btnOutput = new JButton("Save as ...");
+		btnOutput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnOutput.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/save_file.png")));
+		toolBar_1.add(btnOutput);
 	}
 
 	private ImageBlockManager IBManager;
