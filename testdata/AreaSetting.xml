@@ -16,7 +16,7 @@
 		<titleColor></titleColor>
 
 		
-		<!-- Text -->
+		<!-- Text 
 		<Texts>
 		    <Text>
 		        <Text></Text>
@@ -26,8 +26,8 @@
 		        <PosX></PosX>
 		        <PosY></PosY>
 		    </Text>
-		    <!-- Lots of Text -->
 		</Texts>
+		-->
 		<!-- Series -->
 		<Serieses>
 		    <Series>

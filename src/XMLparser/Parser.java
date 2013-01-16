@@ -71,19 +71,19 @@ public class Parser {
 					titleSize = getValue("titleSize", element);
 					
 					//Text
-					NodeList textNode = element.getElementsByTagName("Texts");
-					texts = new TextStruct[textNode.getLength()];
-					for(int ia = 0; ia<textNode.getLength() ; ia++){
-						
-						Element te = (Element)textNode.item(ia);
-						texts[ia] = new TextStruct();
-						texts[ia].color = getValue("Color",te);
-						texts[ia].font = getValue("Font",te);
-						texts[ia].size = getValue("Size",te);
-						texts[ia].text = getValue("Text",te);
-						texts[ia].posX = getValue("PosX",te);
-						texts[ia].posY = getValue("PosY",te);
-					}
+//					NodeList textNode = element.getElementsByTagName("Texts");
+//					texts = new TextStruct[textNode.getLength()];
+//					for(int ia = 0; ia<textNode.getLength() ; ia++){
+//						
+//						Element te = (Element)textNode.item(ia);
+//						texts[ia] = new TextStruct();
+//						texts[ia].color = getValue("Color",te);
+//						texts[ia].font = getValue("Font",te);
+//						texts[ia].size = getValue("Size",te);
+//						texts[ia].text = getValue("Text",te);
+//						texts[ia].posX = getValue("PosX",te);
+//						texts[ia].posY = getValue("PosY",te);
+//					}
 					
 					//Series
 					NodeList seNode = element.getElementsByTagName("Serieses");
