@@ -27,6 +27,7 @@ public class Parser {
 	public boolean check;
 	public TextStruct[] texts = null;
 	public SeriesStruct[] serieses = null;
+	public NodeList pNodes;
 	
 	
 	public Parser(String xmlPath) {
@@ -46,6 +47,7 @@ public class Parser {
 			//System.out.println("root of xml file"
 			//		+ doc.getDocumentElement().getNodeName());
 			NodeList nodes = doc.getElementsByTagName("CommonSetting");
+			pNodes = doc.getElementsByTagName("PrivateSetting");
 			//System.out.println("==========================");
 			
 			for (int i = 0; i < nodes.getLength(); i++) {
