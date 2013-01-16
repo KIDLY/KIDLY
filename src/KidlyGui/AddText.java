@@ -26,9 +26,10 @@ import javax.swing.border.EmptyBorder;
 
 public class AddText extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
+	private JPanel contentPanel = new JPanel();
 	private BufferedImage buffer = null;
 	private Graphics2D bg;
+	private JTextArea textArea;
 	/**
 	 * Launch the application.
 	 */
@@ -100,7 +101,7 @@ public class AddText extends JDialog {
 		scrollPane.setBounds(43, 28, 207, 89);
 		contentPanel.add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
