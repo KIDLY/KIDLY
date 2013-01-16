@@ -12,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,6 +24,7 @@ import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -227,8 +230,8 @@ public class KidlyGUI extends JFrame {
 		canvasPanel panel = new canvasPanel();
 		panel.setBounds(29, 107, 312, 439);
 		panel.setBackground(Color.WHITE);
-		contentPane.add((canvasPanel)panel);
-        this.canvas = panel;
+		contentPane.add((canvasPanel) panel);
+		this.canvas = panel;
 
 		JLabel label_2 = new JLabel("%");
 		label_2.setForeground(Color.RED);
@@ -277,6 +280,22 @@ public class KidlyGUI extends JFrame {
 		toolBar.add(btnAddText_1);
 		btnAddText_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					final AddText dialog = new AddText();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+					
+					dialog.addWindowListener(new WindowAdapter() {
+						public void windowClosing(WindowEvent event) {
+							System.out.println("close dialog");
+							dialog.dispose();
+							int i=dialog.geti();
+							System.out.println(i);
+						}
+					});
+				} catch (Exception et) {
+					et.printStackTrace();
+				}
 
 			}
 		});
@@ -301,32 +320,30 @@ public class KidlyGUI extends JFrame {
 		JButton btnOutput = new JButton("Save as ...");
 		btnOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                System.out.println("hello");
-                saveImage();
+				System.out.println("hello");
+				saveImage();
 			}
 		});
 		btnOutput.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/save_file.png")));
 		toolBar_1.add(btnOutput);
-		
+
 		JButton btnNewButton = new JButton("Cancel Image");
 		btnNewButton.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/cancel.png")));
 		btnNewButton.setBounds(374, 424, 139, 23);
 		contentPane.add(btnNewButton);
 	}
-    public void saveImage(){
-        try
-        {
-            BufferedImage image = this.canvas.getCanvasImage();
-            ImageIO.write(image,"jpeg", new File("/home/lucas/a.jpg"));
-        }
-        catch(Exception exception)
-        {
-            //code
-        }
-    }
+
+	public void saveImage() {
+		try {
+			BufferedImage image = this.canvas.getCanvasImage();
+			ImageIO.write(image, "jpeg", new File("/home/lucas/a.jpg"));
+		} catch (Exception exception) {
+			// code
+		}
+	}
 
 	private ImageBlockManager IBManager;
-    private canvasPanel canvas;
+	private canvasPanel canvas;
 
 	public class canvasPanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -354,7 +371,7 @@ public class KidlyGUI extends JFrame {
 			ib = new ImageBlock(bi, 0, 0);
 			IBManager.addImageBlock(ib);
 			IBManager.selectLayout(0);
-            IBManager.removeImageBlock();
+			IBManager.removeImageBlock();
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -445,13 +462,13 @@ public class KidlyGUI extends JFrame {
 		public void mouseMoved(MouseEvent e) {
 		}
 
-        public BufferedImage getCanvasImage(){
-            if (buffer != null) {
-                return buffer;
-            }else{
-            	return null;
-            }
-        }
+		public BufferedImage getCanvasImage() {
+			if (buffer != null) {
+				return buffer;
+			} else {
+				return null;
+			}
+		}
 	}
 
 	public class ImageBlockManager {
@@ -639,19 +656,19 @@ public class KidlyGUI extends JFrame {
 			return this.blockList.size();
 		}
 
-        /**
-         * remove indexed image block
-         */
-        public ImageBlock removeImageBlock(){
-            if (this.holdedBlock != null) {
-                int i = this.blockList.indexOf(this.holdedBlock);
-                ImageBlock remove = this.blockList.remove(i);
-                this.rearrangeLevel();
-                return remove;
-            }else{
-                return null;
-            }
-        }
+		/**
+		 * remove indexed image block
+		 */
+		public ImageBlock removeImageBlock() {
+			if (this.holdedBlock != null) {
+				int i = this.blockList.indexOf(this.holdedBlock);
+				ImageBlock remove = this.blockList.remove(i);
+				this.rearrangeLevel();
+				return remove;
+			} else {
+				return null;
+			}
+		}
 
 		/**
 		 * use indexer to select a image block

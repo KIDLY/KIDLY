@@ -39,6 +39,9 @@ public class AddText extends JDialog {
 	private int textSize;
 	private String textType;
 	private JComboBox comboBox_Size, comboBox_Type;
+	public int geti(){
+		return 1;
+	}
 
 	/**
 	 * Launch the application.
