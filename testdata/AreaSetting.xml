@@ -3,10 +3,10 @@
     <CommonSetting>
         <!-- BackGround -->
         <dataBgImg>test.jpg</dataBgImg>
-        <dataBgColor></dataBgColor>
+        <dataBgColor>#111111</dataBgColor>
         <dataBgAlpha></dataBgAlpha>
 		<chartBgImg></chartBgImg>
-		<chartBgColor></chartBgColor>
+		<chartBgColor>#ffffff</chartBgColor>
 		<chartBgAlpha></chartBgAlpha>
 		
 		<!-- Title -->
