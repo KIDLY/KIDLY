@@ -29,11 +29,12 @@ public class Parser {
 	
 	public Parser(String xmlPath) {
 		
-		check = setparser(xmlPath);
+		check = setparser(xmlPath);//get parse result
 	}
 
 	public boolean setparser(String xmlPath) {
 		try {
+			//Open File & Start Parse
 			File setting = new File(xmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 					.newInstance();
@@ -41,20 +42,14 @@ public class Parser {
 			Document doc = dBuilder.parse(setting);
 			doc.getDocumentElement().normalize();
 
-			//System.out.println("root of xml file"
-			//		+ doc.getDocumentElement().getNodeName());
 			NodeList nodes = doc.getElementsByTagName("CommonSetting");
-			pNodes = doc.getElementsByTagName("PrivateSetting");
-			//System.out.println("==========================");
+			pNodes = doc.getElementsByTagName("PrivateSetting");//分離出單獨部分
 			
 			for (int i = 0; i < nodes.getLength(); i++) {
 				Node node = nodes.item(0);
 
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
-					
-//					materialSizeX = getValue("materialSizeX", element);
-//					materialSizeY = getValue("materialSizeY", element);
 					
 					//BackGround
 					dataBgImg = getValue("dataBgImg", element);
@@ -95,28 +90,6 @@ public class Parser {
 						serieses[ia].id = getValue("ID",se);
 					}
 					
-					
-					
-//					x_AxisName = getValue("x_AxisName", element);
-//					y_AxisName = getValue("y_AxisName", element);
-//					categorySize = getValue("categorySize", element);
-					
-//					seriesPaint = getValue("seriesPaint", element);
-					
-					System.out.println("materialSizeX: "
-							+ materialSizeX);
-					System.out.println("materialSizeY: "
-							+ materialSizeY);
-					System.out.println("dataBgName: "
-							+ dataBgImg);
-					System.out.println("chartBgName: "
-							+ chartBgImg);
-					System.out.println("categorySize: "
-							+ categorySize);
-					System.out.println("chartTitle: "
-							+ chartTitle);
-					System.out.println("seriesPaint: "
-							+ seriesPaint);
 				}
 			}
 			return true;
@@ -130,13 +103,13 @@ public class Parser {
 	protected static String getValue(String tag, Element element) {
 		NodeList nodes = element.getElementsByTagName(tag).item(0)
 				.getChildNodes();
-//		System.out.println("getValue"+nodes.item(0));
 		if(nodes.item(0)!= null){
+			//將node資料回傳
 			Node node = (Node) nodes.item(0);
-//			System.out.println("getValueNode"+node.getNodeValue());
 			return node.getNodeValue();
 		}
 		else{
+			//處理未輸入資料情況
 			return "";
 		}
 			
