@@ -46,7 +46,7 @@ public class KidlyInCsv extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Generate Chart");
-		this.setBounds(100, 100, 700, 600);
+		this.setBounds(100, 100, 550, 650);
 		this.setVisible(true);
 
 		inCsvPanel = new JPanel();
@@ -67,7 +67,7 @@ public class KidlyInCsv extends JFrame {
 
 			}
 		});
-		openCsvButton.setBounds(10, 5, 200, 30);
+		openCsvButton.setBounds(10, 40, 200, 30);
 		inCsvPanel.add(openCsvButton);
 
 		// Set Open Xml File Button
@@ -85,18 +85,18 @@ public class KidlyInCsv extends JFrame {
 
 			}
 		});
-		openXmlButton.setBounds(10, 70, 200, 30);
+		openXmlButton.setBounds(10, 80, 200, 30);
 		inCsvPanel.add(openXmlButton);
 
 		// Set Input File Path Label
 		inPathLabel1 = new JLabel("CSV_Path: ");
 		inPathLabel1.setFont(new Font("Arial", Font.PLAIN, 14));
-		inPathLabel1.setBounds(10, 40, 300, 20);
+		inPathLabel1.setBounds(230, 40, 900, 20);
 		inCsvPanel.add(inPathLabel1);
 
 		inPathLabel2 = new JLabel("XML_Path: ");
 		inPathLabel2.setFont(new Font("Arial", Font.PLAIN, 14));
-		inPathLabel2.setBounds(10, 105, 300, 20);
+		inPathLabel2.setBounds(230, 80, 900, 20);
 		inCsvPanel.add(inPathLabel2);
 
 		// Set Generate JFreeChart Button
@@ -150,7 +150,7 @@ public class KidlyInCsv extends JFrame {
 					chartPanel.setMouseWheelEnabled(true);
 					chartPanel.setPreferredSize(new Dimension(500, 270));
 	
-					chartPanel.setBounds(10, 220, 300, 300);
+					chartPanel.setBounds(10, 190, 500, 400);
 					inCsvPanel.add(chartPanel);
 					inCsvPanel.updateUI();
 		        }
@@ -163,7 +163,7 @@ public class KidlyInCsv extends JFrame {
 
 			}
 		});
-		genChartButton.setBounds(10, 150, 300, 50);
+		genChartButton.setBounds(10, 120, 300, 50);
 		inCsvPanel.add(genChartButton);
 
 		// Set Choice Kinds of Chart
@@ -173,7 +173,7 @@ public class KidlyInCsv extends JFrame {
         
         for( int i=0 ; i<chartType.length ; i++ )
             chartTypeChoice.add(chartType[i]);
-        chartTypeChoice.setBounds(250, 5, 200, 30);
+        chartTypeChoice.setBounds(10, 5, 150, 30);
         inCsvPanel.add(chartTypeChoice);
         
      

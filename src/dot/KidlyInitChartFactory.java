@@ -29,8 +29,6 @@ import XMLparser.LineChartParser;
 public class KidlyInitChartFactory {
 	
 	private String title = "Default Title";
-    private String categoryAxisLabel = "Default Category Label";
-    private String valueAxisLabel = "Default Value Label";
     private PlotOrientation orientation = PlotOrientation.VERTICAL;
     private boolean legend = true;
     private boolean tooltips = true;
@@ -42,8 +40,6 @@ public class KidlyInitChartFactory {
 		super();
 	
 	}
-	
-	
 	
 	
 	public JFreeChart createChart(String chartType,CategoryDataset dataSet,XMLparser.Parser mParser) {
@@ -67,15 +63,14 @@ public class KidlyInitChartFactory {
 		else if( chartType.equals("Pie Chart") ){
 			CategoryToPieDataset categoryToPieDataset = new CategoryToPieDataset(dataSet, TableOrder.BY_ROW , 1);
 			chart = ChartFactory.createPieChart(title,categoryToPieDataset,legend,tooltips,urls);
-		
-			System.out.println(mParser.chartBgColor);
-			System.out.println(mParser.chartBgColor.substring(0, 2));
 		}
 		else
 			return null;
 		
-		// Set Bg
 		
+		
+		// Set Bg
+	
 		//chartBgImg
 		if(!mParser.chartBgColor.equals(""))
 			chart.setBackgroundPaint(colorFactory.getColor(mParser.chartBgColor));
@@ -122,6 +117,8 @@ public class KidlyInitChartFactory {
 			chart.getPlot().setBackgroundImageAlpha(Float.valueOf(mParser.dataBgAlpha));
 
 		
+		
+		
 		//Set Title
 		TextTitle tt = new TextTitle();
 		if(!mParser.chartTitle.equals(""))
@@ -150,7 +147,8 @@ public class KidlyInitChartFactory {
 		//}
 
 
-		//Set Series - Pie
+		
+		//Set Series - 1.Pie 2.Others
 		if(chartType.equals("Pie Chart")){
 			for(int i=0;i<Array.getLength(mParser.serieses);i++){
 				//Section Color
@@ -163,8 +161,6 @@ public class KidlyInitChartFactory {
 						piePlot.setSectionPaint(dataSet.getColumnKey(id), colorFactory.getColor(mParser.serieses[i].color));
 					}
 				}
-				//mParser.serieses[i].font???
-				//mParser.serieses[i].size??
 			}
 		}else{
 			for(int i=0;i<Array.getLength(mParser.serieses);i++){
