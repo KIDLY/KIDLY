@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class KidlyInCsv extends JFrame {
 	private String xmlPath = "testdata\\AreaSetting.xml";
 	private Choice chartTypeChoice ;
 	private ChartPanel chartPanel ;
+	private BufferedImage finalImg;
 
 	private void initialize() {
 
@@ -68,7 +70,7 @@ public class KidlyInCsv extends JFrame {
 			}
 		});
 		openCsvButton.setBounds(10, 40, 200, 30);
-		inCsvPanel.add(openCsvButton);
+		
 
 		// Set Open Xml File Button
 		openXmlButton = new JButton("Open Xml File");
@@ -86,18 +88,18 @@ public class KidlyInCsv extends JFrame {
 			}
 		});
 		openXmlButton.setBounds(10, 80, 200, 30);
-		inCsvPanel.add(openXmlButton);
+		
 
 		// Set Input File Path Label
 		inPathLabel1 = new JLabel("CSV_Path: ");
 		inPathLabel1.setFont(new Font("Arial", Font.PLAIN, 14));
 		inPathLabel1.setBounds(230, 40, 900, 20);
-		inCsvPanel.add(inPathLabel1);
+		
 
 		inPathLabel2 = new JLabel("XML_Path: ");
 		inPathLabel2.setFont(new Font("Arial", Font.PLAIN, 14));
 		inPathLabel2.setBounds(230, 80, 900, 20);
-		inCsvPanel.add(inPathLabel2);
+		
 
 		// Set Generate JFreeChart Button
 		genChartButton = new JButton("Generate Chart");
@@ -141,6 +143,7 @@ public class KidlyInCsv extends JFrame {
 			        KidlyInitChartFactory factory = new KidlyInitChartFactory();
 			        JFreeChart chart = factory.createChart(selectType,dataSet,mParser);
 			        
+			        finalImg = chart.createBufferedImage(500, 400);
 			        				
 			        if(chartPanel != null){
 			        	inCsvPanel.remove(chartPanel);
@@ -164,7 +167,18 @@ public class KidlyInCsv extends JFrame {
 			}
 		});
 		genChartButton.setBounds(10, 120, 300, 50);
-		inCsvPanel.add(genChartButton);
+		
+		
+		//Final Image Create
+		final JButton finalButton = new JButton("Create!!");
+		finalButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				KidlyInCsv.this.dispose();
+
+			}
+		});
+		finalButton.setBounds(350, 120, 100, 30);
+		
 
 		// Set Choice Kinds of Chart
 		chartTypeChoice = new Choice();
@@ -174,24 +188,32 @@ public class KidlyInCsv extends JFrame {
         for( int i=0 ; i<chartType.length ; i++ )
             chartTypeChoice.add(chartType[i]);
         chartTypeChoice.setBounds(10, 5, 150, 30);
+        
+        inCsvPanel.add(openCsvButton);
+        inCsvPanel.add(openXmlButton);
+        inCsvPanel.add(inPathLabel1);
+        inCsvPanel.add(inPathLabel2);
+        inCsvPanel.add(genChartButton);
+        inCsvPanel.add(finalButton);
         inCsvPanel.add(chartTypeChoice);
         
      
 	}
 
 	public KidlyInCsv() {
-
 		super();
 		initialize();
+	}
+	
+	public BufferedImage getImg(){
+		return finalImg;
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		new KidlyInCsv();
-		
 	}
 
 }
