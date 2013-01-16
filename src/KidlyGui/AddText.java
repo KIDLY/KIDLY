@@ -39,9 +39,7 @@ public class AddText extends JDialog {
 	private int textSize;
 	private String textType;
 	private JComboBox comboBox_Size, comboBox_Type;
-	public int geti(){
-		return 1;
-	}
+	public Boolean console = false;
 
 	/**
 	 * Launch the application.
@@ -76,9 +74,7 @@ public class AddText extends JDialog {
 		JLabel lblNewLabel = new JLabel("Font Size:");
 		lblNewLabel.setBounds(26, 92, 65, 15);
 		contentPanel.add(lblNewLabel);
-		
-		
-		
+
 		comboBox_Size = new JComboBox();
 		comboBox_Size.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -101,27 +97,27 @@ public class AddText extends JDialog {
 				textType = comboBox_Type.getSelectedItem().toString();
 			}
 		});
-		comboBox_Type.setModel(new DefaultComboBoxModel(new String[] {"SansSerif", "Serif", "Dialog", "DialogInput", "Monospaced"}));
+		comboBox_Type.setModel(new DefaultComboBoxModel(new String[] { "SansSerif", "Serif", "Dialog", "DialogInput", "Monospaced" }));
 		comboBox_Type.setBounds(101, 123, 108, 21);
 		contentPanel.add(comboBox_Type);
 
 		boldToggleButton = new JToggleButton("");
 		boldToggleButton.addActionListener(btnAction);
-	
+
 		boldToggleButton.setIcon(new ImageIcon(AddText.class.getResource("/res/bold.png")));
 		boldToggleButton.setBounds(352, 92, 26, 23);
 		contentPanel.add(boldToggleButton);
 
 		italicToggleButton = new JToggleButton("");
 		italicToggleButton.addActionListener(btnAction);
-		
+
 		italicToggleButton.setIcon(new ImageIcon(AddText.class.getResource("/res/italic.png")));
 		italicToggleButton.setBounds(388, 92, 26, 23);
 		contentPanel.add(italicToggleButton);
 
 		UnderlineToggleButton = new JToggleButton("");
 		UnderlineToggleButton.addActionListener(btnAction);
-		
+
 		UnderlineToggleButton.setIcon(new ImageIcon(AddText.class.getResource("/res/underline.png")));
 		UnderlineToggleButton.setBounds(424, 92, 26, 23);
 		contentPanel.add(UnderlineToggleButton);
@@ -136,11 +132,11 @@ public class AddText extends JDialog {
 
 		textArea = new JTextField();
 		scrollPane.setViewportView(textArea);
-		textFont=new Font("SansSerif",Font.PLAIN,12);
+		textFont = new Font("SansSerif", Font.PLAIN, 12);
 		textArea.setFont(textFont);
-		textSize=12;
-		textType="SansSerif";
-		
+		textSize = 12;
+		textType = "SansSerif";
+
 		result_panel = new TextPanel();
 		result_panel.setBounds(80, 200, 348, 38);
 		contentPanel.add(result_panel);
@@ -168,6 +164,13 @@ public class AddText extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						console = true;
+						dispose();
+					}
+
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -176,7 +179,8 @@ public class AddText extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						System.exit(0);
+						console = false;
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
@@ -184,7 +188,8 @@ public class AddText extends JDialog {
 			}
 		}
 	}
-	ActionListener btnAction=new ActionListener() {
+
+	ActionListener btnAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (italicToggleButton.isSelected()) {
 				textFont = new Font(textType, Font.ITALIC, textSize); /* TODO */
@@ -212,13 +217,12 @@ public class AddText extends JDialog {
 
 		public void paintComponent(Graphics g) {
 			buffer = new BufferedImage(textArea.getWidth(), textArea.getHeight(), BufferedImage.TYPE_INT_RGB);
-			buffer=ScreenImage.createImage(textArea);
+			buffer = ScreenImage.createImage(textArea);
 			/*
-			bg = buffer.createGraphics();
-			bg.setPaint(Color.WHITE);
-			bg.fillRect(0, 0, textArea.getWidth(), textArea.getHeight());
-			bg.setPaint(Color.BLACK);
-			bg.drawString(textArea.getText(), 0, 20);
+			 * bg = buffer.createGraphics(); bg.setPaint(Color.WHITE);
+			 * bg.fillRect(0, 0, textArea.getWidth(), textArea.getHeight());
+			 * bg.setPaint(Color.BLACK); bg.drawString(textArea.getText(), 0,
+			 * 20);
 			 */
 			/*
 			 * StringTokenizer st=new StringTokenizer(textArea.getText()); int
@@ -234,5 +238,9 @@ public class AddText extends JDialog {
 
 		}
 
+	}
+
+	public BufferedImage getImg() {
+		return buffer;
 	}
 }

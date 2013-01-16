@@ -267,7 +267,7 @@ public class KidlyGUI extends JFrame {
 					jFileOpen.setMultiSelectionEnabled(false);
 					jFileOpen.showOpenDialog(null);
 					File file = jFileOpen.getSelectedFile();
-                    IBManager.addImageBlock(file.getAbsolutePath().toString(), 0, 0);
+					IBManager.addImageBlock(file.getAbsolutePath().toString(), 0, 0);
 					System.out.println("Open:" + file.getAbsolutePath().toString());
 				} catch (Exception ef) {
 					ef.getStackTrace();
@@ -284,13 +284,16 @@ public class KidlyGUI extends JFrame {
 					final AddText dialog = new AddText();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-					
+
 					dialog.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent event) {
-							System.out.println("close dialog");
-							dialog.dispose();
-							int i=dialog.geti();
-							System.out.println(i);
+						public void windowClosed(WindowEvent event) {
+							if (dialog.console == true) {
+								System.out.println(event.toString());
+								// dialog.dispose();
+								BufferedImage newText = dialog.getImg();
+								IBManager.addImageBlock(newText, 0, 0);
+								dialog.console = false;
+							}
 						}
 					});
 				} catch (Exception et) {
@@ -320,7 +323,7 @@ public class KidlyGUI extends JFrame {
 		JButton btnOutput = new JButton("Save as ...");
 		btnOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                saveImage();
+				saveImage();
 			}
 		});
 		btnOutput.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/save_file.png")));
@@ -329,13 +332,13 @@ public class KidlyGUI extends JFrame {
 		JButton btnNewButton = new JButton("Cancel Image");
 		btnNewButton.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/cancel.png")));
 		btnNewButton.setBounds(374, 424, 139, 23);
-		btnNewButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                if (IBManager.holdedBlock != null) {
-                    IBManager.removeImageBlock();
-                }
-            }
-        });
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (IBManager.holdedBlock != null) {
+					IBManager.removeImageBlock();
+				}
+			}
+		});
 		contentPane.add(btnNewButton);
 	}
 
@@ -479,18 +482,29 @@ public class KidlyGUI extends JFrame {
 		 * raise the spinner upper bounds. @author Dotto
 		 */
 		public void addImageBlock(String src, int x, int y) {
-            BufferedImage bi;
-            try {
-                bi = ImageIO.read(new File(src));
-                ImageBlock block = new ImageBlock(bi, x, y);
-                block.level = this.blockList.size();
-                this.blockList.add(block);
-                spinner.setModel(new SpinnerNumberModel(new Integer(0),
-                            new Integer(0),
-                            new Integer(this.blockList.size() - 1),
-                            new Integer(1)));
-            } catch (IOException e) {
-            }
+			BufferedImage bi;
+			try {
+				bi = ImageIO.read(new File(src));
+				ImageBlock block = new ImageBlock(bi, x, y);
+				block.level = this.blockList.size();
+				this.blockList.add(block);
+				spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(this.blockList.size() - 1), new Integer(1)));
+			} catch (IOException e) {
+			}
+		}
+
+		/**
+		 * add bufferedImage to ImageBlockManager
+		 * 
+		 * @param bi
+		 * @param x
+		 * @param y
+		 */
+		public void addImageBlock(BufferedImage bi, int x, int y) {
+			ImageBlock block = new ImageBlock(bi, x, y);
+			block.level = this.blockList.size();
+			this.blockList.add(block);
+			spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(this.blockList.size() - 1), new Integer(1)));
 		}
 
 		/**
@@ -631,16 +645,16 @@ public class KidlyGUI extends JFrame {
 		public boolean isCanvasHit(int x, int y) {
 			for (ImageBlock ib : this.blockList) {
 				if (ib.isHit(x, y)) {
-                    Graphics2D g2d;
-                    if (this.holdedBlock != null) {
-                        g2d = this.holdedBlock.image.createGraphics();
-                        g2d.setPaint(Color.WHITE);
-                        g2d.drawRect(0,0,this.holdedBlock.width-1, this.holdedBlock.height-1);
-                    }
+					Graphics2D g2d;
+					if (this.holdedBlock != null) {
+						g2d = this.holdedBlock.image.createGraphics();
+						g2d.setPaint(Color.WHITE);
+						g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
+					}
 					this.holdedBlock = ib;
-                    g2d = this.holdedBlock.image.createGraphics();
-                    g2d.setPaint(Color.black);
-                    g2d.drawRect(0,0,this.holdedBlock.width-1, this.holdedBlock.height-1);
+					g2d = this.holdedBlock.image.createGraphics();
+					g2d.setPaint(Color.black);
+					g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
 					this.offsetX = x - ib.x;
 					this.offsetY = y - ib.y;
 					return true;
@@ -667,23 +681,20 @@ public class KidlyGUI extends JFrame {
 			return this.blockList.size();
 		}
 
-        /**
-         * remove indexed image block
-         */
-        public ImageBlock removeImageBlock(){
-            if (this.holdedBlock != null) {
-                int i = this.blockList.indexOf(this.holdedBlock);
-                ImageBlock remove = this.blockList.remove(i);
-                this.rearrangeLevel();
-                spinner.setModel(new SpinnerNumberModel(new Integer(0),
-                            new Integer(0),
-                            new Integer(this.blockList.size() - 1),
-                            new Integer(1)));
-                return remove;
-            }else{
-                return null;
-            }
-        }
+		/**
+		 * remove indexed image block
+		 */
+		public ImageBlock removeImageBlock() {
+			if (this.holdedBlock != null) {
+				int i = this.blockList.indexOf(this.holdedBlock);
+				ImageBlock remove = this.blockList.remove(i);
+				this.rearrangeLevel();
+				spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(this.blockList.size() - 1), new Integer(1)));
+				return remove;
+			} else {
+				return null;
+			}
+		}
 
 		/**
 		 * use indexer to select a image block
@@ -729,14 +740,14 @@ public class KidlyGUI extends JFrame {
 			int oy = this.y - (this.height - this.preHeight) / 2;
 			if (x > ox && x < ox + this.width && y > oy && y < oy + this.height) {
 				return true;
-			}else{
-                return false;
-            }
+			} else {
+				return false;
+			}
 		}
 
-        /**
-         * paint this image block on garphic 2D
-         */
+		/**
+		 * paint this image block on garphic 2D
+		 */
 		public void paintOnGraphics2D(Graphics2D bg) {
 			this.width = (int) this.preWidth * this.scalePercentage / 100;
 			this.height = (int) this.preHeight * this.scalePercentage / 100;
