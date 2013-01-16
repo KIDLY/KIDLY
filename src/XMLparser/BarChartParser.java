@@ -12,85 +12,50 @@ import org.w3c.dom.NodeList;
 
 public class BarChartParser extends Parser{
 
-	public String materialSizeX;
-	public String materialSizeY;
-	public String dataBgName;
-	public String chartBgName;
-	public String x_AxisName;
-	public String y_AxisName;
-	public String categorySize;
-	public String chartTitle;
-//	public String seriesPaint;
-//	public boolean check;
+	boolean checkPrivate;
+	public String xAxisName,yAxisName;
+	public String xAxisRange,yAxisRange;
+	public String yUpperBound,yLowerBound;
+	public String xAxisLinePaint,yAxisLinePaint,xAxisLineStroke,yAxisLineStroke;
+	public String xLowerMargin,xUpperMargin,yLowerMargin,yUpperMargin;
+	public String xLabelAngle,yLabelAngle;
+	public String outlineStroke;
+	
+	
 	
 	public BarChartParser(String xmlPath) {
 		super(xmlPath);
-//		check = setparser(xmlPath);
+		setparser(xmlPath);
+		checkPrivate = parsePrivate(super.pNodes);
 		
 	}
 
-//	public boolean setparser(String xmlPath) {
-//		try {
-//			File setting = new File(xmlPath);
-//			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
-//					.newInstance();
-//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//			Document doc = dBuilder.parse(setting);
-//			doc.getDocumentElement().normalize();
-//
-//			//System.out.println("root of xml file"
-//			//		+ doc.getDocumentElement().getNodeName());
-//			NodeList nodes = doc.getElementsByTagName("setting");
-//			//System.out.println("==========================");
-//
-//			for (int i = 0; i < nodes.getLength(); i++) {
-//				Node node = nodes.item(0);
-//
-//				if (node.getNodeType() == Node.ELEMENT_NODE) {
-//					Element element = (Element) node;
-//					materialSizeX = getValue("materialSizeX", element);
-//					materialSizeY = getValue("materialSizeY", element);
-//					dataBgName = getValue("dataBgName", element);
-//					chartBgName = getValue("chartBgName", element);
-//					x_AxisName = getValue("x_AxisName", element);
-//					y_AxisName = getValue("y_AxisName", element);
-//					categorySize = getValue("categorySize", element);
-//					chartTitle = getValue("chartTitle", element);
-//					seriesPaint = getValue("seriesPaint", element);
-//					
-//					System.out.println("materialSizeX: "
-//							+ materialSizeX);
-//					System.out.println("materialSizeY: "
-//							+ materialSizeY);
-//					System.out.println("dataBgName: "
-//							+ dataBgName);
-//					System.out.println("chartBgName: "
-//							+ chartBgName);
-//					System.out.println("x_AxisName: "
-//							+ x_AxisName);
-//					System.out.println("y_AxisName: "
-//							+ y_AxisName);
-//					System.out.println("categorySize: "
-//							+ categorySize);
-//					System.out.println("chartTitle: "
-//							+ chartTitle);
-//					System.out.println("seriesPaint: "
-//							+ seriesPaint);
-//				}
-//			}
-//			return true;
-//		} catch (Exception ex) {
-//			//ex.printStackTrace();
-//			System.out.println("Type error");
-//			return false;
-//		}
-//	}
-
-	private static String getValue(String tag, Element element) {
-		NodeList nodes = element.getElementsByTagName(tag).item(0)
-				.getChildNodes();
-		Node node = (Node) nodes.item(0);
-		return node.getNodeValue();
+	private boolean parsePrivate(NodeList nodelist){
+		Node node = nodelist.item(0);
+		if (node.getNodeType() == Node.ELEMENT_NODE) {
+			Element element = (Element) node;
+			xAxisName = getValue("XAxisName",element);
+			yAxisName = getValue("YAxisName",element);
+			xAxisRange = getValue("XAxisRange",element);
+			yAxisRange = getValue("YAxisRange",element);
+			yUpperBound =  getValue("YUpperBound",element);
+			yLowerBound = getValue("YLowerBound",element);
+			xAxisLinePaint = getValue("XAxisLinePaint",element);
+			yAxisLinePaint = getValue("YAxisLinePaint",element);
+			xAxisLineStroke = getValue("XAxisLineStroke",element);
+			yAxisLineStroke = getValue("YAxisLineStroke",element);
+			xLowerMargin = getValue("XLowerMargin",element);
+			xUpperMargin = getValue("XUpperMargin",element);
+			yLowerMargin = getValue("YLowerMargin",element);
+			yUpperMargin = getValue("YUpperMargin",element);
+			xLabelAngle = getValue("XLabelAngle",element);
+			yLabelAngle = getValue("YLabelAngle",element);
+			outlineStroke = getValue("OutlineStroke",element);
+			
+			System.out.println("finishPrivate"+outlineStroke);
+		}
+		
+		return true;
 	}
 
 }

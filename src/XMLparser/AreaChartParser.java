@@ -1,5 +1,6 @@
 package XMLparser;
 
+import java.awt.Color;
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -13,18 +14,46 @@ import org.w3c.dom.NodeList;
 public class AreaChartParser extends Parser{
 
 	boolean checkPrivate;
+	public String xAxisName,yAxisName;
+	public String xAxisRange,yAxisRange;
+	public String yUpperBound,yLowerBound;
+	public String xAxisLinePaint,yAxisLinePaint,xAxisLineStroke,yAxisLineStroke;
+	public String xLowerMargin,xUpperMargin,yLowerMargin,yUpperMargin;
+	public String xLabelAngle,yLabelAngle;
+	public String outlineStroke;
+	
+	
 	
 	public AreaChartParser(String xmlPath) {
 		super(xmlPath);
 		setparser(xmlPath);
-		parsePrivate(super.pNodes);
+		checkPrivate = parsePrivate(super.pNodes);
+		
 	}
 
 	private boolean parsePrivate(NodeList nodelist){
 		Node node = nodelist.item(0);
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			Element element = (Element) node;
+			xAxisName = getValue("XAxisName",element);
+			yAxisName = getValue("YAxisName",element);
+			xAxisRange = getValue("XAxisRange",element);
+			yAxisRange = getValue("YAxisRange",element);
+			yUpperBound =  getValue("YUpperBound",element);
+			yLowerBound = getValue("YLowerBound",element);
+			xAxisLinePaint = getValue("XAxisLinePaint",element);
+			yAxisLinePaint = getValue("YAxisLinePaint",element);
+			xAxisLineStroke = getValue("XAxisLineStroke",element);
+			yAxisLineStroke = getValue("YAxisLineStroke",element);
+			xLowerMargin = getValue("XLowerMargin",element);
+			xUpperMargin = getValue("XUpperMargin",element);
+			yLowerMargin = getValue("YLowerMargin",element);
+			yUpperMargin = getValue("YUpperMargin",element);
+			xLabelAngle = getValue("XLabelAngle",element);
+			yLabelAngle = getValue("YLabelAngle",element);
+			outlineStroke = getValue("OutlineStroke",element);
 			
+			System.out.println("finishPrivate"+outlineStroke);
 		}
 		
 		return true;
