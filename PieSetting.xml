@@ -2,9 +2,11 @@
 <settings>
     <CommonSetting>
         <!-- BackGround -->
-        <dataBgName>test.jpg</dataBgName>
-        <dataBgAlpha></dataBgAlpha>
-		<chartBgName></chartBgName>
+        <dataBgImg>test.jpg</dataBgImg>
+		<dataBgColor></dataBgColor>
+		<dataBgAlpha></dataBgAlpha>
+		<chartBgImg></chartBgImg>
+		<chartBgColor></chartBgcolor>
 		<chartBgAlpha></chartBgAlpha>
 		
 		<!-- Title -->
@@ -22,6 +24,8 @@
 		        <Font></Font>
 		        <Size></Size>
 		        <Color></Color>
+				<posX></posX>
+				<posY></posY>
 		    </Text>
 		    <!-- Lots of Text -->
 		</Texts>
@@ -33,36 +37,15 @@
 		        <Size></Size>
 		        <Color></Color>
 		    </Series>
-			<Series>
-		        <ID></ID>
-		        <Font></Font>
-		        <Size></Size>
-		        <Color></Color>
-		    </Series>
-			<Series>
-		        <ID></ID>
-		        <Font></Font>
-		        <Size></Size>
-		        <Color></Color>
-		    </Series>
-		    <!-- Lots of Series ..... -->
 		</Serieses>
-		
-		<!-- I don't know what's this -->
-		<materialSizeX>50</materialSizeX>
-		<materialSizeY>50</materialSizeY>
-		
-		
-		
 		<!--seriesPaint>red</seriesPaint-->
     </CommonSetting>
-    <PrivateSetting>
-        <!-- Axis Pie Chart don't get this -->
-		<x_AxisName>time</x_AxisName>
-		<y_AxisName>people</y_AxisName>
-		<categorySize>10</categorySize>
-		<axisRange></axisRange>
-		
-		
+	<!-- I don't know what's this -->
+	<!-- Lots of Series ..... -->
+	<materialSizeX>50</materialSizeX>
+	<materialSizeY>50</materialSizeY>
+	<PrivateSetting>
+	
+	
     </PrivateSetting>
 </settings>

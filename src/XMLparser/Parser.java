@@ -2,7 +2,6 @@ package XMLparser;
 
 import java.io.File;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
