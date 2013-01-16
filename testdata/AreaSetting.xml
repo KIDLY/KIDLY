@@ -29,13 +29,14 @@
 		    </Text>
 		    <!-- Lots of Text -->
 		</Texts>
+
 		<!-- Series -->
 		<Serieses>
 		    <Series>
-		        <ID></ID>
+		        <ID>1</ID>
 		        <Font></Font>
 		        <Size></Size>
-		        <Color></Color>
+		        <Color>#FFFFFF</Color>
 		    </Series>
 		    <!-- Lots of Series ..... -->
 		</Serieses>

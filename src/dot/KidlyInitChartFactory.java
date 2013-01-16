@@ -1,15 +1,16 @@
 package dot;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 import javax.imageio.ImageIO;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
@@ -107,51 +108,63 @@ public class KidlyInitChartFactory {
 
 		
 		//Set Title
-		TextTitle tt = new TextTitle(mParser.chartTitle);
-        tt.setBackgroundPaint(colorFactory.getColor(mParser.titleColor));
-        tt.setFont(new Font(mParser.titleFont,0,30));
+		TextTitle tt = new TextTitle();
+		if(!mParser.chartTitle.equals(""))
+			tt.setText(mParser.chartTitle);
         
-        tt.setPaint(Color.blue);
+		if(!mParser.titleFont.equals(""))
+			tt.setFont(new Font(mParser.titleFont,0,30));
         
-        chart.setTitle(tt);
+		if(!mParser.titleColor.equals(""))	
+			tt.setPaint(colorFactory.getColor(mParser.titleColor));
+        
+		chart.setTitle(tt);
 		
-//		<chartTitle>Test chart</chartTitle>
-//		<titleFont></titleFont>
-//		<titleSize></titleSize>
-//		<titleColor></titleColor>
-//		<titleX></titleX>
-//		<titleY></titleY>
-//		
-//		
-//		//Set Text
-//		<!-- Text -->
-//		<Texts>
-//		    <Text>
-//		        <Text></Text>
-//		        <Font></Font>
-//		        <Size></Size>
-//		        <Color></Color>
-//		        <PosX></PosX>
-//		        <PosY></PosY>
-//		    </Text>
-//		    <!-- Lots of Text -->
-//		</Texts>
-//		
-//		//Set Series
-//		<!-- Series -->
-//		<Serieses>
-//		    <Series>
-//		        <ID></ID>
-//		        <Font></Font>
-//		        <Size></Size>
-//		        <Color></Color>
-//		    </Series>
-//		    <!-- Lots of Series ..... -->
-//		</Serieses>
-		
-		
-		
-		
+
+	
+		//Set Text
+		for (int i=0;i<Array.getLength(mParser.texts);i++){
+		    
+//		    mParser.texts[i].text
+//			mParser.texts[i].size
+//			mParser.texts[i].font
+//			
+//			mParser.texts[i].color
+//			mParser.texts[i].posX
+//			mParser.texts[i].posY
+		}
+
+
+		//Set Series - Pie
+		if(chartType.equals("Pie Chart")){
+			for(int i=0;i<Array.getLength(mParser.serieses);i++){
+				//Section Color
+				if(!mParser.serieses[i].id.equals("") && !mParser.serieses[i].color.equals("")){
+				
+					int id = Integer.valueOf(mParser.serieses[i].id);
+				
+					if(id < dataSet.getColumnCount()){
+						PiePlot piePlot = (PiePlot) chart.getPlot();
+						piePlot.setSectionPaint(dataSet.getColumnKey(id), colorFactory.getColor(mParser.serieses[i].color));
+					}
+				}
+				//mParser.serieses[i].font???
+				//mParser.serieses[i].size??
+			}
+		}else{
+			for(int i=0;i<Array.getLength(mParser.serieses);i++){
+				//Series Color
+				if(!mParser.serieses[i].id.equals("") && !mParser.serieses[i].color.equals("")){
+					int id = Integer.valueOf(mParser.serieses[i].id);
+					
+					if(id < dataSet.getRowCount()){
+						chart.getCategoryPlot().getRenderer().setSeriesPaint(id,colorFactory.getColor(mParser.serieses[i].color)); 	
+					}
+				}
+
+			}			
+		}
+			
 		return chart;
 		
 	}

@@ -27,7 +27,6 @@ public class Parser {
 	public SeriesStruct[] serieses = null;
 	public NodeList pNodes;
 	
-	
 	public Parser(String xmlPath) {
 		
 		check = setparser(xmlPath);
@@ -87,7 +86,6 @@ public class Parser {
 						texts[ia].posX = getValue("PosX",te);
 						texts[ia].posY = getValue("PosY",te);
 					}
-					
 					//Series
 					NodeList seNode = element.getElementsByTagName("Serieses");
 					serieses = new SeriesStruct[seNode.getLength()];

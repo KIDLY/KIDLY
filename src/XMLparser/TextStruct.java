@@ -1,6 +1,6 @@
 package XMLparser;
 
-class TextStruct {
+public class TextStruct {
 	public String text;//¤å¦r¤º®e
 	public String font;
 	public String size;
