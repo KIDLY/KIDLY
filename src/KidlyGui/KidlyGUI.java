@@ -349,6 +349,7 @@ public class KidlyGUI extends JFrame {
 			ib = new ImageBlock(bi, 0, 0);
 			IBManager.addImageBlock(ib);
 			IBManager.selectLayout(0);
+            IBManager.removeImageBlock();
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -636,10 +637,15 @@ public class KidlyGUI extends JFrame {
         /**
          * remove indexed image block
          */
-        public ImageBlock removeImageBlock(int index){
-            ImageBlock remove = this.blockList.remove(index);
-            this.rearrangeLevel();
-            return remove;
+        public ImageBlock removeImageBlock(){
+            if (this.holdedBlock != null) {
+                int i = this.blockList.indexOf(this.holdedBlock);
+                ImageBlock remove = this.blockList.remove(i);
+                this.rearrangeLevel();
+                return remove;
+            }else{
+                return null;
+            }
         }
 
 		/**
