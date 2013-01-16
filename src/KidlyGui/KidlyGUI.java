@@ -80,7 +80,6 @@ public class KidlyGUI extends JFrame {
 	 */
 	public KidlyGUI() {
 		initGui();
-
 	}
 
 	public void initGui() {
@@ -225,10 +224,11 @@ public class KidlyGUI extends JFrame {
 		label.setBounds(460, 360, 177, 15);
 		contentPane.add(label);
 
-		JPanel panel = new canvasPanel();
+		canvasPanel panel = new canvasPanel();
 		panel.setBounds(29, 107, 312, 439);
 		panel.setBackground(Color.WHITE);
-		contentPane.add(panel);
+		contentPane.add((canvasPanel)panel);
+        this.canvas = panel;
 
 		JLabel label_2 = new JLabel("%");
 		label_2.setForeground(Color.RED);
@@ -301,13 +301,32 @@ public class KidlyGUI extends JFrame {
 		JButton btnOutput = new JButton("Save as ...");
 		btnOutput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                System.out.println("hello");
+                saveImage();
 			}
 		});
 		btnOutput.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/save_file.png")));
 		toolBar_1.add(btnOutput);
+		
+		JButton btnNewButton = new JButton("Cancel Image");
+		btnNewButton.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/cancel.png")));
+		btnNewButton.setBounds(374, 424, 139, 23);
+		contentPane.add(btnNewButton);
 	}
+    public void saveImage(){
+        try
+        {
+            BufferedImage image = this.canvas.getCanvasImage();
+            ImageIO.write(image,"jpeg", new File("/home/lucas/a.jpg"));
+        }
+        catch(Exception exception)
+        {
+            //code
+        }
+    }
 
 	private ImageBlockManager IBManager;
+    private canvasPanel canvas;
 
 	public class canvasPanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -335,6 +354,7 @@ public class KidlyGUI extends JFrame {
 			ib = new ImageBlock(bi, 0, 0);
 			IBManager.addImageBlock(ib);
 			IBManager.selectLayout(0);
+            IBManager.removeImageBlock();
 
 			ActionListener animation = new ActionListener() {
 				@Override
@@ -424,6 +444,14 @@ public class KidlyGUI extends JFrame {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 		}
+
+        public BufferedImage getCanvasImage(){
+            if (buffer != null) {
+                return buffer;
+            }else{
+            	return null;
+            }
+        }
 	}
 
 	public class ImageBlockManager {
@@ -611,14 +639,19 @@ public class KidlyGUI extends JFrame {
 			return this.blockList.size();
 		}
 
-		/**
-		 * remove indexed image block
-		 */
-		public ImageBlock removeImageBlock(int index) {
-			ImageBlock remove = this.blockList.remove(index);
-			this.rearrangeLevel();
-			return remove;
-		}
+        /**
+         * remove indexed image block
+         */
+        public ImageBlock removeImageBlock(){
+            if (this.holdedBlock != null) {
+                int i = this.blockList.indexOf(this.holdedBlock);
+                ImageBlock remove = this.blockList.remove(i);
+                this.rearrangeLevel();
+                return remove;
+            }else{
+                return null;
+            }
+        }
 
 		/**
 		 * use indexer to select a image block
