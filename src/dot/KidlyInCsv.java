@@ -38,7 +38,7 @@ public class KidlyInCsv extends JFrame {
 	private JLabel inPathLabel1 ;
 	private JLabel inPathLabel2 ;
 	private String csvPath = "test.csv";
-	private String xmlPath = "Setting.xml";
+	private String xmlPath = "testdata\\AreaSetting.xml";
 	private Choice chartTypeChoice ;
 	private ChartPanel chartPanel ;
 
@@ -79,6 +79,7 @@ public class KidlyInCsv extends JFrame {
 				openXmlButton.setVisible(true);
 				FileChooser chooser = new FileChooser("xml");
 				xmlPath = chooser.getPath();
+				System.out.println(xmlPath);
 				inPathLabel2.setText("XML_Path: " + xmlPath);
 				openXmlButton.setVisible(true);
 

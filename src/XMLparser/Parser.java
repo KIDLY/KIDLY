@@ -55,8 +55,8 @@ public class Parser {
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) node;
 					
-					materialSizeX = getValue("materialSizeX", element);
-					materialSizeY = getValue("materialSizeY", element);
+//					materialSizeX = getValue("materialSizeX", element);
+//					materialSizeY = getValue("materialSizeY", element);
 					
 					//BackGround
 					dataBgImg = getValue("dataBgImg", element);
@@ -137,13 +137,13 @@ public class Parser {
 		}
 	}
 
-	private static String getValue(String tag, Element element) {
+	protected static String getValue(String tag, Element element) {
 		NodeList nodes = element.getElementsByTagName(tag).item(0)
 				.getChildNodes();
-		System.out.println("getValue"+nodes.item(0));
+//		System.out.println("getValue"+nodes.item(0));
 		if(nodes.item(0)!= null){
 			Node node = (Node) nodes.item(0);
-			System.out.println("getValueNode"+node.getNodeValue());
+//			System.out.println("getValueNode"+node.getNodeValue());
 			return node.getNodeValue();
 		}
 		else{

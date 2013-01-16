@@ -47,10 +47,28 @@
 		<materialSizeY>50</materialSizeY>
     <PrivateSetting>
         <!-- Axis Pie Chart don't get this -->
-		<x_AxisName>time</x_AxisName>
-		<y_AxisName>people</y_AxisName>
+        <!-- Axis -->
+		<XAxisName>time</XAxisName>
+		<YAxisName>people</YAxisName>
 		<categorySize>10</categorySize>
-		<axisRange></axisRange>
+		<XAxisRange></XAxisRange>
+		<YAxisRange></YAxisRange>
+		<YUpperBound></YUpperBound>
+		<YLowerBound></YLowerBound>
+		<XAxisLinePaint></XAxisLinePaint>
+		<YAxisLinePaint></YAxisLinePaint>
+		<XAxisLineStroke></XAxisLineStroke>
+		<YAxisLineStroke></YAxisLineStroke>
+		<XLowerMargin></XLowerMargin>
+		<XUpperMargin></XUpperMargin>
+		<YLowerMargin></YLowerMargin>
+		<YUpperMargin></YUpperMargin>
+		<XLabelAngle></XLabelAngle>
+		<YLabelAngle></YLabelAngle>
+		<OutlineStroke>23</OutlineStroke>
+		
+		
+		
 		
 		
     </PrivateSetting>
