@@ -45,6 +45,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import dot.KidlyInCsv;
+
 public class KidlyGUI extends JFrame {
 
 	private JPanel contentPane;
@@ -253,6 +255,25 @@ public class KidlyGUI extends JFrame {
 		toolBar.add(btnAddText);
 		btnAddText.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					final KidlyInCsv csvDialog = new KidlyInCsv();
+					csvDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					csvDialog.setVisible(true);
+
+					csvDialog.addWindowListener(new WindowAdapter() {
+						public void windowClosed(WindowEvent event) {
+							//if (csvDialog.console == true) {
+								System.out.println(event.toString());
+								// dialog.dispose();
+								BufferedImage newKidlyChart = csvDialog.getImg();
+								IBManager.addImageBlock(newKidlyChart, 0, 0);
+								//dialog.console = false;
+							//}
+						}
+					});
+				} catch (Exception et) {
+					et.printStackTrace();
+				}
 			}
 		});
 		btnAddText.setIcon(new ImageIcon(KidlyGUI.class.getResource("/res/add_graph.png")));
@@ -345,7 +366,7 @@ public class KidlyGUI extends JFrame {
 	public void saveImage() {
 		try {
 			BufferedImage image = this.canvas.getCanvasImage();
-			ImageIO.write(image, "jpeg", new File("/home/lucas/a.jpg"));
+			ImageIO.write(image, "jpeg", new File("./output.jpg"));
 		} catch (Exception exception) {
 			// code
 		}
@@ -645,16 +666,16 @@ public class KidlyGUI extends JFrame {
 		public boolean isCanvasHit(int x, int y) {
 			for (ImageBlock ib : this.blockList) {
 				if (ib.isHit(x, y)) {
-					Graphics2D g2d;
+					//Graphics2D g2d;
 					if (this.holdedBlock != null) {
-						g2d = this.holdedBlock.image.createGraphics();
-						g2d.setPaint(Color.WHITE);
-						g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
+						//g2d = this.holdedBlock.image.createGraphics();
+						//g2d.setPaint(Color.WHITE);
+						//g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
 					}
 					this.holdedBlock = ib;
-					g2d = this.holdedBlock.image.createGraphics();
-					g2d.setPaint(Color.black);
-					g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
+					//g2d = this.holdedBlock.image.createGraphics();
+					//g2d.setPaint(Color.black);
+					//g2d.drawRect(0, 0, this.holdedBlock.width - 1, this.holdedBlock.height - 1);
 					this.offsetX = x - ib.x;
 					this.offsetY = y - ib.y;
 					return true;
