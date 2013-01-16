@@ -141,7 +141,7 @@ public class KidlyInCsv extends JFrame {
 			        KidlyInitChartFactory factory = new KidlyInitChartFactory();
 			        JFreeChart chart = factory.createChart(selectType,dataSet,mParser);
 			        
-			        
+			       
 			        
 			        
 			        				
@@ -169,7 +169,6 @@ public class KidlyInCsv extends JFrame {
 		genChartButton.setBounds(10, 150, 300, 50);
 		inCsvPanel.add(genChartButton);
 
-		
 		// Set Choice Kinds of Chart
 		chartTypeChoice = new Choice();
 		
